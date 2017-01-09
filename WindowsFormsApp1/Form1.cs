@@ -14,7 +14,7 @@ namespace WindowsFormsApp1
 {
     public partial class MainForm : Form
     {
-        
+        //TESTTTTTTT
         Microsoft.DirectX.AudioVideoPlayback.Video vid;
         int hour, minute, second, VideoDuration, VideoPosition;
         string Video_Time;
