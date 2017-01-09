@@ -14,23 +14,7 @@ namespace WindowsFormsApp1
 {
     public partial class MainForm : Form
     {
-        /*direct X test*/
-        //Mat input = Cv2.ImRead("lena.jpg");
-        /*Mat source = new Mat("lena.jpg", ImreadModes.Color);
-        Mat grayFiltered = new Mat();
-        Mat Canny = new Mat();
-        */
-        Mat source = new Mat("../../Images/lena.jpg", ImreadModes.Color);
-        Mat grayFiltered = new Mat();
-        Mat ClearEdge = new Mat();
-        Mat filtered = new Mat();
-       // Mat d = createADiamond();
-        //Mat x = createAXShape();
-        Mat Canny = new Mat();
-        //test22222222
-        //Cv2.Canny(source, Canny, 32, 192);
-
-        //Cv2.imShow("input", input)
+        
         Microsoft.DirectX.AudioVideoPlayback.Video vid;
         int hour, minute, second, VideoDuration, VideoPosition;
         string Video_Time;
