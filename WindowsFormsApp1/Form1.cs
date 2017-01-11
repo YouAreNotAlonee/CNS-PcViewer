@@ -333,13 +333,14 @@ namespace WindowsFormsApp1
             String city = "Seoul";
             String state = "";
             String country = "";
-            StringBuilder add = new StringBuilder("http://maps.google.com/maps?q=");
+            StringBuilder add = new StringBuilder("http://");
             add.Append(city);
             add.Append(state);
             add.Append(country);
 
-            webBrowser.Navigate(add.ToString());
-        
+            //webBrowser.Navigate(add.ToString());
+
+            webBrowser.Navigate("http://52.78.22.120:5000/map");
         }
 
         private void folder_open_Click(object sender, EventArgs e)
