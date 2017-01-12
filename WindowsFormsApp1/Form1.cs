@@ -7,51 +7,66 @@ using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.DirectX.AudioVideoPlayback;
+using System.Threading;
 //using DirectShowLib;
 using OpenCvSharp;
-
 namespace WindowsFormsApp1
 {
     public partial class MainForm : Form
     {
-        /*direct X test*/
-        //Mat input = Cv2.ImRead("lena.jpg");
-        /*Mat source = new Mat("lena.jpg", ImreadModes.Color);
-        Mat grayFiltered = new Mat();
-        Mat Canny = new Mat();
-        */
-        Mat source = new Mat("../../Images/lena.jpg", ImreadModes.Color);
-        Mat grayFiltered = new Mat();
-        Mat ClearEdge = new Mat();
-        Mat filtered = new Mat();
-       // Mat d = createADiamond();
-        //Mat x = createAXShape();
-        Mat Canny = new Mat();
-        //test22222222
-        //Cv2.Canny(source, Canny, 32, 192);
+        //TESTTTTTTT
+        CvCapture capture;
+        IplImage imgSrc = new IplImage(640, 480, BitDepth.U8, 3);
 
-        //Cv2.imShow("input", input)
+        private void initFileList(string curdir)
+        {
+            /*string curdir = Environment.CurrentDirectory;
+            DirectoryInfo di = new DirectoryInfo(curdir);*/
+            //string curdir = @"D:\testvideo";
+            DirectoryInfo di = new DirectoryInfo(curdir);
+            
+            FileInfo[] files = di.GetFiles();
+            listView.BeginUpdate();
+            listView.View = View.Details;
+            //listView.LargeImageList = imagel
+
+            foreach(var fi in files)
+            {
+                
+                ListViewItem lvi = new ListViewItem(fi.Name);
+                lvi.SubItems.Add(fi.Length.ToString());
+                lvi.SubItems.Add(fi.LastWriteTime.ToString());
+                lvi.SubItems.Add(fi.FullName);
+                lvi.ImageIndex = 0;
+                listView.Items.Add(lvi);
+                //MessageBox.Show(fi.FullName);
+            }
+            listView.EndUpdate();
+        }
+
+        private bool initCamera()
+        {
+            try
+            {
+                capture = CvCapture.FromFile("D:\\test\\imageTest.jpg");
+                capture.SetCaptureProperty(CaptureProperty.FrameWidth, 680);
+                capture.SetCaptureProperty(CaptureProperty.FrameHeight, 480);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        //video
+        
         Microsoft.DirectX.AudioVideoPlayback.Video vid;
         int hour, minute, second, VideoDuration, VideoPosition;
         string Video_Time;
         bool Video_Timer_Enable= false, Valid_FileType = false, Mute_Mode = false;
         bool ScrollEnable = false;
         //Size VideoDefaultSize;
-        public void init()
-        {
-            System.Drawing.Size Panel_Size;
-            Panel_Size = video_panel.Size;
-
-            OpenFileDialog of = new OpenFileDialog();
-            if(of.ShowDialog()==DialogResult.OK)
-            {
-                if (vid != null)
-                    vid.Dispose();
-                vid = new Microsoft.DirectX.AudioVideoPlayback.Video(of.FileName);
-                vid.Owner = this.video_panel;
-                video_panel.Size = Panel_Size;
-            }
-        }
+        
         //IGraphBuilder pGraphBuilder = null;
         //IMediaControl pMediaControl = null;
 
@@ -151,10 +166,34 @@ namespace WindowsFormsApp1
             Video_Timer.Enabled = true;
             
         }
-       
+       private void StartTimer()
+        {
+            timer1.Interval = 33;
+            timer1.Enabled = true;
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+//            initFileList();
+            /*
+            if(initCamera())
+            {
+                StartTimer();
+            }
+            else
+            {
+                MessageBox.Show("can't connect");
+            }//video connect with opencv
+            */
+            /*
+            IplImage img = Cv.LoadImage("D:\\test\\imageTest.jpg");
+            Cv.NamedWindow("image");
+            Cv.ShowImage("image", img);
+
+            Cv.WaitKey();
+            Cv.DestroyWindow("image");
+            Cv.ReleaseImage(img);
+            */
+
             this.listView.View = View.Details;
             this.listView.Columns.Add("날짜", 100, HorizontalAlignment.Center);
             this.listView.Columns.Add("시", 60, HorizontalAlignment.Center);
@@ -252,6 +291,10 @@ namespace WindowsFormsApp1
                 Video_Play();
                 vid.Play();
             }
+            else
+            {
+                MessageBox.Show("Double click Video");
+            }
         }
 
         private void audio_step_back_Click(object sender, EventArgs e)
@@ -290,18 +333,34 @@ namespace WindowsFormsApp1
             String city = "Seoul";
             String state = "";
             String country = "";
-            StringBuilder add = new StringBuilder("http://maps.google.com/maps?q=");
+            StringBuilder add = new StringBuilder("http://");
             add.Append(city);
             add.Append(state);
             add.Append(country);
 
-            webBrowser.Navigate(add.ToString());
-        
+            //webBrowser.Navigate(add.ToString());
+
+            webBrowser.Navigate("http://52.78.22.120:5000/map");
         }
 
         private void folder_open_Click(object sender, EventArgs e)
         {
-
+            string curdir;
+            //OpenFileDialog of = new OpenFileDialog();
+            FolderBrowserDialog fd = new FolderBrowserDialog();
+            fd.SelectedPath = @"D:\testvideo\";
+            //fd.RootFolder = System.Environment.SpecialFolder("D:\");
+                
+            if (fd.ShowDialog() == DialogResult.OK)
+            {
+                curdir = fd.SelectedPath;
+                //curdir = fd.FileName;
+                initFileList(curdir);
+            }
+            else
+            {
+                MessageBox.Show("Select Folder");
+            }
         }
 
         private void Camera_Click(object sender, EventArgs e)
@@ -380,6 +439,34 @@ namespace WindowsFormsApp1
                 vid.CurrentPosition = (double)(trackBar.Value / 10.0);
         }
 
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            imgSrc = capture.QueryFrame();
+            pictureBoxIpl1.ImageIpl = imgSrc;
+        }
+
+        private void listView_DoubleClick(object sender, EventArgs e)
+        {
+            System.Drawing.Size Panel_Size;
+            Panel_Size = video_panel.Size;
+
+            if (listView.SelectedItems.Count == 1)
+            {
+                ListView.SelectedListViewItemCollection items = listView.SelectedItems;
+                ListViewItem lvItem = items[0];
+                string add = lvItem.SubItems[0].Text;
+                string video_path = listView.FocusedItem.SubItems[3].Text;
+
+                if (vid != null)
+                    vid.Dispose();
+                vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
+                vid.Owner = this.video_panel;
+                video_panel.Size = Panel_Size;
+                vid.Play();
+                //MessageBox.Show(add);
+            }
+        }
+
         private void Parking_btn_CheckedChanged(object sender, EventArgs e)
         {
             if (Parking_btn.Checked)
@@ -402,7 +489,18 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            init();
+            System.Drawing.Size Panel_Size;
+            Panel_Size = video_panel.Size;
+
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                if (vid != null)
+                    vid.Dispose();
+                vid = new Microsoft.DirectX.AudioVideoPlayback.Video(of.FileName);
+                vid.Owner = this.video_panel;
+                video_panel.Size = Panel_Size;
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
