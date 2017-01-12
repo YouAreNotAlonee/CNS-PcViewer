@@ -60,6 +60,7 @@
             this.curTime = new System.Windows.Forms.TextBox();
             this.trackBar = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.VideoTime = new System.Windows.Forms.TextBox();
             this.Dirve_btn = new System.Windows.Forms.CheckBox();
             this.Event_btn = new System.Windows.Forms.CheckBox();
             this.Parking_btn = new System.Windows.Forms.CheckBox();
@@ -68,8 +69,10 @@
             this.audio_pause = new System.Windows.Forms.Button();
             this.video_panel = new System.Windows.Forms.Panel();
             this.Video_Timer = new System.Windows.Forms.Timer(this.components);
-            this.VideoTime = new System.Windows.Forms.TextBox();
             this.webBrowser = new System.Windows.Forms.WebBrowser();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxIpl1 = new OpenCvSharp.UserInterface.PictureBoxIpl();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.Volume_Bar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -80,6 +83,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIpl1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -333,6 +338,7 @@
             this.listView.Size = new System.Drawing.Size(324, 301);
             this.listView.TabIndex = 33;
             this.listView.UseCompatibleStateImageBehavior = false;
+            this.listView.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             // 
             // LeftRight
             // 
@@ -417,6 +423,16 @@
             this.groupBox1.Size = new System.Drawing.Size(878, 110);
             this.groupBox1.TabIndex = 41;
             this.groupBox1.TabStop = false;
+            // 
+            // VideoTime
+            // 
+            this.VideoTime.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.VideoTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.VideoTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.VideoTime.Location = new System.Drawing.Point(788, 6);
+            this.VideoTime.Name = "VideoTime";
+            this.VideoTime.Size = new System.Drawing.Size(89, 15);
+            this.VideoTime.TabIndex = 41;
             // 
             // Dirve_btn
             // 
@@ -509,16 +525,6 @@
             // 
             this.Video_Timer.Tick += new System.EventHandler(this.Video_Timer_Tick);
             // 
-            // VideoTime
-            // 
-            this.VideoTime.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.VideoTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.VideoTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.VideoTime.Location = new System.Drawing.Point(788, 6);
-            this.VideoTime.Name = "VideoTime";
-            this.VideoTime.Size = new System.Drawing.Size(89, 15);
-            this.VideoTime.TabIndex = 41;
-            // 
             // webBrowser
             // 
             this.webBrowser.Location = new System.Drawing.Point(888, 463);
@@ -527,11 +533,33 @@
             this.webBrowser.Size = new System.Drawing.Size(316, 202);
             this.webBrowser.TabIndex = 50;
             // 
+            // pictureBox6
+            // 
+            this.pictureBox6.Location = new System.Drawing.Point(4, 84);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(100, 50);
+            this.pictureBox6.TabIndex = 51;
+            this.pictureBox6.TabStop = false;
+            // 
+            // pictureBoxIpl1
+            // 
+            this.pictureBoxIpl1.Location = new System.Drawing.Point(4, 141);
+            this.pictureBoxIpl1.Name = "pictureBoxIpl1";
+            this.pictureBoxIpl1.Size = new System.Drawing.Size(100, 50);
+            this.pictureBoxIpl1.TabIndex = 52;
+            this.pictureBoxIpl1.TabStop = false;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1219, 729);
+            this.Controls.Add(this.pictureBoxIpl1);
+            this.Controls.Add(this.pictureBox6);
             this.Controls.Add(this.webBrowser);
             this.Controls.Add(this.audio_pause);
             this.Controls.Add(this.button1);
@@ -576,6 +604,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIpl1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -623,6 +653,9 @@
         private System.Windows.Forms.Timer Video_Timer;
         private System.Windows.Forms.TextBox VideoTime;
         private System.Windows.Forms.WebBrowser webBrowser;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIpl1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
