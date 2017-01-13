@@ -199,26 +199,14 @@ namespace WindowsFormsApp1
             this.listView.Columns.Add("시", 60, HorizontalAlignment.Center);
             this.listView.Columns.Add("분 초", 60, HorizontalAlignment.Center);
             this.listView.Columns.Add("녹화타입", 80, HorizontalAlignment.Center);
-            insert_listviewitem();//listview test
         }
-        /*listview test*/
-        private void insert_listviewitem()
-        {
-            ListViewItem item;
-            String[] itemStr = new string[4];
-            itemStr.SetValue("20161230", 0);
-            itemStr.SetValue("6시", 1);
-            itemStr.SetValue("46분", 2);
-            itemStr.SetValue("상시", 3);
-            //itemStr.SetValue("s", 0);
-            item = new ListViewItem(itemStr);
-            this.listView.Items.Add(item);
-        }
-        /*test end*/
+        
 
         private void Settings_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("setting menu clicked!");
+            //Setting = new Setting();
+            Setting setting = new Setting();
+            setting.ShowDialog();
         }
 
         private void LeftRight_Scroll(object sender, EventArgs e)
@@ -243,6 +231,39 @@ namespace WindowsFormsApp1
 
         private void audio_step_forward_Click(object sender, EventArgs e)
         {
+            System.Drawing.Size Panel_Size;
+            Panel_Size = video_panel.Size;
+
+            if (listView.SelectedItems.Count == 1)
+            {
+                ListView.SelectedListViewItemCollection items = listView.SelectedItems;
+                //listView.SelectedIndices += 1;
+                /*test*/
+                ListView.SelectedIndexCollection indexes = this.listView.SelectedIndices;
+                var SelectedItem = listView.SelectedItems[0];
+                int selectedIndex = listView.Items.IndexOf(SelectedItem);
+                //if (selectedIndex >= listView.Items.Count)
+                //selectedIndex++;
+                listView.Items[selectedIndex].Selected = false;
+                listView.Items[selectedIndex + 1].Selected = true;
+                listView.Select();
+                
+                /*endtest*/
+                /*
+                ListViewItem lvItem = items[0];
+                string add = lvItem.SubItems[0].Text;
+                string video_path = listView.FocusedItem.SubItems[3].Text;
+
+                if (vid != null)
+                    vid.Dispose();
+                vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
+                vid.Owner = this.video_panel;
+                video_panel.Size = Panel_Size;
+                //vid.Play();*/
+                audio_play_Click(null, null);
+                //MessageBox.Show(add);
+                
+            }
             //vid.
         }
 
@@ -337,10 +358,9 @@ namespace WindowsFormsApp1
             add.Append(city);
             add.Append(state);
             add.Append(country);
-
-            //webBrowser.Navigate(add.ToString());
-
+            webBrowser.Navigate(add.ToString());
             webBrowser.Navigate("http://52.78.22.120:5000/map");
+
         }
 
         private void folder_open_Click(object sender, EventArgs e)
@@ -449,22 +469,30 @@ namespace WindowsFormsApp1
         {
             System.Drawing.Size Panel_Size;
             Panel_Size = video_panel.Size;
-
-            if (listView.SelectedItems.Count == 1)
+            try
             {
-                ListView.SelectedListViewItemCollection items = listView.SelectedItems;
-                ListViewItem lvItem = items[0];
-                string add = lvItem.SubItems[0].Text;
-                string video_path = listView.FocusedItem.SubItems[3].Text;
+                if (listView.SelectedItems.Count == 1)
+                {
+                    ListView.SelectedListViewItemCollection items = listView.SelectedItems;
+                    ListViewItem lvItem = items[0];
+                    string add = lvItem.SubItems[0].Text;
+                    string video_path = listView.FocusedItem.SubItems[3].Text;
 
-                if (vid != null)
-                    vid.Dispose();
-                vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
-                vid.Owner = this.video_panel;
-                video_panel.Size = Panel_Size;
-                vid.Play();
-                //MessageBox.Show(add);
+                    if (vid != null)
+                        vid.Dispose();
+                    vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
+                    vid.Owner = this.video_panel;
+                    video_panel.Size = Panel_Size;
+                    //vid.Play();
+                    audio_play_Click(null, null);
+                    //MessageBox.Show(add);
+                }
             }
+            catch(Exception exa)
+            {
+                MessageBox.Show(exa.Message);
+            }
+
         }
 
         private void Parking_btn_CheckedChanged(object sender, EventArgs e)
@@ -546,5 +574,7 @@ namespace WindowsFormsApp1
                     Valid_FileType = true;
             }
         }
+
+        //Image CaptureScreen(int sourceX, int sourceY, int destX)
     }
 }
