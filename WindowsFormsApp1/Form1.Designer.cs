@@ -91,7 +91,7 @@
             this.label1.Font = new System.Drawing.Font("문체부 제목 돋음체", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.Location = new System.Drawing.Point(0, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 21);
+            this.label1.Size = new System.Drawing.Size(106, 27);
             this.label1.TabIndex = 0;
             this.label1.Text = "VIEWER";
             // 
@@ -163,7 +163,7 @@
             this.Speed_tbox.Location = new System.Drawing.Point(8, 74);
             this.Speed_tbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Speed_tbox.Name = "Speed_tbox";
-            this.Speed_tbox.Size = new System.Drawing.Size(78, 41);
+            this.Speed_tbox.Size = new System.Drawing.Size(78, 51);
             this.Speed_tbox.TabIndex = 16;
             // 
             // label2
@@ -172,7 +172,7 @@
             this.label2.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.Location = new System.Drawing.Point(93, 90);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(75, 27);
+            this.label2.Size = new System.Drawing.Size(94, 34);
             this.label2.TabIndex = 17;
             this.label2.Text = "km/h";
             // 
@@ -183,7 +183,7 @@
             this.Volume_Bar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Volume_Bar.Maximum = 100;
             this.Volume_Bar.Name = "Volume_Bar";
-            this.Volume_Bar.Size = new System.Drawing.Size(175, 45);
+            this.Volume_Bar.Size = new System.Drawing.Size(175, 56);
             this.Volume_Bar.TabIndex = 18;
             this.Volume_Bar.Value = 50;
             // 
@@ -193,7 +193,7 @@
             this.label6.Font = new System.Drawing.Font("굴림", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label6.Location = new System.Drawing.Point(14, 652);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(103, 29);
+            this.label6.Size = new System.Drawing.Size(131, 37);
             this.label6.TabIndex = 23;
             this.label6.Text = "G 센서";
             // 
@@ -353,7 +353,7 @@
             this.LeftRight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.LeftRight.Maximum = 1;
             this.LeftRight.Name = "LeftRight";
-            this.LeftRight.Size = new System.Drawing.Size(119, 45);
+            this.LeftRight.Size = new System.Drawing.Size(119, 56);
             this.LeftRight.TabIndex = 34;
             this.LeftRight.Scroll += new System.EventHandler(this.LeftRight_Scroll);
             // 
@@ -374,7 +374,7 @@
             this.UpDown.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.UpDown.Maximum = 1;
             this.UpDown.Name = "UpDown";
-            this.UpDown.Size = new System.Drawing.Size(119, 45);
+            this.UpDown.Size = new System.Drawing.Size(119, 56);
             this.UpDown.TabIndex = 36;
             this.UpDown.Scroll += new System.EventHandler(this.UpDown_Scroll);
             // 
@@ -397,7 +397,7 @@
             this.curTime.Location = new System.Drawing.Point(802, 8);
             this.curTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.curTime.Name = "curTime";
-            this.curTime.Size = new System.Drawing.Size(103, 15);
+            this.curTime.Size = new System.Drawing.Size(103, 19);
             this.curTime.TabIndex = 39;
             // 
             // trackBar
@@ -406,7 +406,7 @@
             this.trackBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 1);
             this.trackBar.Maximum = 100;
             this.trackBar.Name = "trackBar";
-            this.trackBar.Size = new System.Drawing.Size(805, 45);
+            this.trackBar.Size = new System.Drawing.Size(805, 56);
             this.trackBar.TabIndex = 40;
             this.trackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar.Scroll += new System.EventHandler(this.trackBar_Scroll);
@@ -446,7 +446,7 @@
             this.VideoTime.Location = new System.Drawing.Point(901, 8);
             this.VideoTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.VideoTime.Name = "VideoTime";
-            this.VideoTime.Size = new System.Drawing.Size(102, 15);
+            this.VideoTime.Size = new System.Drawing.Size(102, 19);
             this.VideoTime.TabIndex = 41;
             // 
             // Dirve_btn
@@ -458,7 +458,7 @@
             this.Dirve_btn.Location = new System.Drawing.Point(1016, 31);
             this.Dirve_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Dirve_btn.Name = "Dirve_btn";
-            this.Dirve_btn.Size = new System.Drawing.Size(59, 20);
+            this.Dirve_btn.Size = new System.Drawing.Size(71, 24);
             this.Dirve_btn.TabIndex = 42;
             this.Dirve_btn.Text = "상시";
             this.Dirve_btn.UseVisualStyleBackColor = true;
@@ -473,7 +473,7 @@
             this.Event_btn.Location = new System.Drawing.Point(1101, 31);
             this.Event_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Event_btn.Name = "Event_btn";
-            this.Event_btn.Size = new System.Drawing.Size(75, 20);
+            this.Event_btn.Size = new System.Drawing.Size(91, 24);
             this.Event_btn.TabIndex = 43;
             this.Event_btn.Text = "이벤트";
             this.Event_btn.UseVisualStyleBackColor = true;
@@ -488,7 +488,7 @@
             this.Parking_btn.Location = new System.Drawing.Point(1206, 31);
             this.Parking_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Parking_btn.Name = "Parking_btn";
-            this.Parking_btn.Size = new System.Drawing.Size(59, 20);
+            this.Parking_btn.Size = new System.Drawing.Size(71, 24);
             this.Parking_btn.TabIndex = 44;
             this.Parking_btn.Text = "주차";
             this.Parking_btn.UseVisualStyleBackColor = true;
@@ -503,7 +503,7 @@
             this.Camera_btn.Location = new System.Drawing.Point(1294, 31);
             this.Camera_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Camera_btn.Name = "Camera_btn";
-            this.Camera_btn.Size = new System.Drawing.Size(75, 20);
+            this.Camera_btn.Size = new System.Drawing.Size(91, 24);
             this.Camera_btn.TabIndex = 45;
             this.Camera_btn.Text = "카메라";
             this.Camera_btn.UseVisualStyleBackColor = true;
@@ -582,6 +582,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1393, 911);
             this.Controls.Add(this.pictureBoxIpl1);
