@@ -163,7 +163,7 @@ namespace WindowsFormsApp1
                 this, CreateFlags.HardwareVertexProcessing,
                 present_params);
 
-            this.Volume_Bar.us
+            //this.Volume_Bar.us
 
 
             this.BackColor = Color.White;
