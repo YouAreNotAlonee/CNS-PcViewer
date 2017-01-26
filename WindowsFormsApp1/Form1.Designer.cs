@@ -90,6 +90,7 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "VIEWER";
             // 
+
             // Volume_Bar
             // 
             this.Volume_Bar.LargeChange = 1;
@@ -97,7 +98,9 @@
             this.Volume_Bar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Volume_Bar.Maximum = 100;
             this.Volume_Bar.Name = "Volume_Bar";
-            this.Volume_Bar.Size = new System.Drawing.Size(151, 56);
+
+            this.Volume_Bar.Size = new System.Drawing.Size(175, 56);
+
             this.Volume_Bar.TabIndex = 18;
             this.Volume_Bar.Value = 50;
             this.Volume_Bar.Visible = false;
@@ -124,6 +127,7 @@
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             // 
+
             // Dirve_btn
             // 
             this.Dirve_btn.AutoSize = true;
