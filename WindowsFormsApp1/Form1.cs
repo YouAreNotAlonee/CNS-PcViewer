@@ -14,11 +14,20 @@ using Microsoft.DirectX.Direct3D;
 using OpenCvSharp;
 namespace WindowsFormsApp1
 {
+    /*
+    [DllImport("TATLib.dll")]
+    public static extern int Open(char device);
+    */
 
+    
     public partial class MainForm : Form
     {
         //TESTTTTTTT
-        //CvCapture capture;
+        [DllImport("MFCLibrary1.dll")]
+        public static extern void DLL_int_insert(int _data);
+
+        CvCapture capture;
+
         IplImage imgSrc = new IplImage(640, 480, BitDepth.U8, 3);
 
         private string video_path;
@@ -371,7 +380,8 @@ namespace WindowsFormsApp1
 
         private void two_dot_zero_btn_Click(object sender, EventArgs e)
         {
-
+            DLL_int_insert(10);
+        }
         }*/
 
         private void Marker_Click(object sender, EventArgs e)
@@ -411,7 +421,11 @@ namespace WindowsFormsApp1
 
         private void Camera_Click(object sender, EventArgs e)
         {
-            Video_Capture();
+            
+            //HandleCollector a=10;
+            UserImportDLL.MessageBox(0, "hello wolrd!", "Meesage BOx title", 0);
+            //UserImportDLL.TAT_PB_Init(a);
+
         }
 
         private void save_Click(object sender, EventArgs e)
@@ -638,5 +652,12 @@ namespace WindowsFormsApp1
         }
 
         //Image CaptureScreen(int sourceX, int sourceY, int destX)
+    }
+    public class UserImportDLL
+    {
+        [DllImport("User32.dll")]
+        public static extern int MessageBox(int hParent, string Message, string Caption, int Type);
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_PB_Init(HandleCollector h);
     }
 }

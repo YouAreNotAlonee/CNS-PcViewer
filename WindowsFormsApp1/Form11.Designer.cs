@@ -63,6 +63,7 @@ namespace WindowsFormsApp1 {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+
         public static System.Drawing.Bitmap audio_pause_BackgroundImage {
             get {
                 object obj = ResourceManager.GetObject("audio_pause.BackgroundImage", resourceCulture);
@@ -161,6 +162,7 @@ namespace WindowsFormsApp1 {
         }
         
         /// <summary>
+
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
         public static System.Drawing.Bitmap Settings_BackgroundImage {
@@ -189,6 +191,7 @@ namespace WindowsFormsApp1 {
                 return ((System.Drawing.Point)(obj));
             }
         }
+
         
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.

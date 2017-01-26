@@ -111,18 +111,18 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("굴림", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label6.Location = new System.Drawing.Point(14, 652);
+            this.label6.Location = new System.Drawing.Point(12, 522);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(131, 37);
             this.label6.TabIndex = 23;
             this.label6.Text = "G 센서";
             // 
+
             // listView
             // 
-            this.listView.Location = new System.Drawing.Point(1015, 64);
-            this.listView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.listView.Location = new System.Drawing.Point(888, 51);
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(370, 375);
+            this.listView.Size = new System.Drawing.Size(324, 301);
             this.listView.TabIndex = 33;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
@@ -134,6 +134,7 @@
             this.Dirve_btn.Checked = true;
             this.Dirve_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Dirve_btn.Font = new System.Drawing.Font("굴림", 12F);
+
             this.Dirve_btn.Location = new System.Drawing.Point(1015, 13);
             this.Dirve_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Dirve_btn.Name = "Dirve_btn";
@@ -149,6 +150,7 @@
             this.Event_btn.Checked = true;
             this.Event_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Event_btn.Font = new System.Drawing.Font("굴림", 12F);
+
             this.Event_btn.Location = new System.Drawing.Point(1099, 13);
             this.Event_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Event_btn.Name = "Event_btn";
@@ -164,6 +166,7 @@
             this.Parking_btn.Checked = true;
             this.Parking_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Parking_btn.Font = new System.Drawing.Font("굴림", 12F);
+
             this.Parking_btn.Location = new System.Drawing.Point(1205, 13);
             this.Parking_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Parking_btn.Name = "Parking_btn";
@@ -179,6 +182,7 @@
             this.Camera_btn.Checked = true;
             this.Camera_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Camera_btn.Font = new System.Drawing.Font("굴림", 12F);
+
             this.Camera_btn.Location = new System.Drawing.Point(1294, 13);
             this.Camera_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Camera_btn.Name = "Camera_btn";
@@ -190,23 +194,23 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(7, 446);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button1.Location = new System.Drawing.Point(6, 357);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(86, 58);
+            this.button1.Size = new System.Drawing.Size(75, 46);
             this.button1.TabIndex = 48;
             this.button1.Text = "Select Video";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+
             // video_panel
             // 
             this.video_panel.Controls.Add(this.Volume_Bar);
             this.video_panel.Location = new System.Drawing.Point(89, 31);
             this.video_panel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.video_panel.Name = "video_panel";
-            this.video_panel.Size = new System.Drawing.Size(920, 472);
+            this.video_panel.Size = new System.Drawing.Size(805, 378);
             this.video_panel.TabIndex = 46;
             // 
             // Video_Timer
@@ -215,15 +219,16 @@
             // 
             // webBrowser
             // 
-            this.webBrowser.Location = new System.Drawing.Point(1015, 446);
-            this.webBrowser.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.webBrowser.MinimumSize = new System.Drawing.Size(23, 25);
+            this.webBrowser.Location = new System.Drawing.Point(888, 357);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser.Name = "webBrowser";
+
             this.webBrowser.Size = new System.Drawing.Size(361, 450);
             this.webBrowser.TabIndex = 50;
             // 
             // label2
             // 
+
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.Location = new System.Drawing.Point(98, 862);
@@ -325,12 +330,13 @@
             this.videoSpeed_bar.Value = 50;
             this.videoSpeed_bar.Visible = false;
             this.videoSpeed_bar.MouseLeave += new System.EventHandler(this.videoSpeed_bar_MouseLeave);
+
             // 
             // pictureBoxIpl1
             // 
-            this.pictureBoxIpl1.Location = new System.Drawing.Point(5, 176);
-            this.pictureBoxIpl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pictureBoxIpl1.Location = new System.Drawing.Point(4, 141);
             this.pictureBoxIpl1.Name = "pictureBoxIpl1";
+
             this.pictureBoxIpl1.Size = new System.Drawing.Size(78, 62);
             this.pictureBoxIpl1.TabIndex = 52;
             this.pictureBoxIpl1.TabStop = false;
@@ -529,12 +535,14 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+
             this.ClientSize = new System.Drawing.Size(1393, 911);
             this.Controls.Add(this.videoSpeed_bar);
+
             this.Controls.Add(this.pictureBoxIpl1);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.pictureBox6);
@@ -560,7 +568,6 @@
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
             this.Text = "BB Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
