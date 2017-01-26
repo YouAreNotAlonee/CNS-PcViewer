@@ -12,9 +12,18 @@ using System.Threading;
 using OpenCvSharp;
 namespace WindowsFormsApp1
 {
+    /*
+    [DllImport("TATLib.dll")]
+    public static extern int Open(char device);
+    */
+
+    
     public partial class MainForm : Form
     {
         //TESTTTTTTT
+        [DllImport("MFCLibrary1.dll")]
+        public static extern void DLL_int_insert(int _data);
+
         CvCapture capture;
         IplImage imgSrc = new IplImage(640, 480, BitDepth.U8, 3);
 
@@ -29,7 +38,7 @@ namespace WindowsFormsApp1
             listView.BeginUpdate();
             listView.View = View.Details;
             //listView.LargeImageList = imagel
-
+            
             foreach(var fi in files)
             {
                 
@@ -185,7 +194,9 @@ namespace WindowsFormsApp1
             }//video connect with opencv
             */
             /*
-            IplImage img = Cv.LoadImage("D:\\test\\imageTest.jpg");
+            IplImage img = Cv.LoadImage("imageTest.jpg");
+            bright_image =  Cv.CreateImage(Cv.GetSize()
+            Cv.AddS(img, Cv.RGB(60,60,60), )
             Cv.NamedWindow("image");
             Cv.ShowImage("image", img);
 
@@ -345,7 +356,7 @@ namespace WindowsFormsApp1
 
         private void two_dot_zero_btn_Click(object sender, EventArgs e)
         {
-
+            DLL_int_insert(10);
         }
 
         private void Marker_Click(object sender, EventArgs e)
@@ -385,7 +396,10 @@ namespace WindowsFormsApp1
 
         private void Camera_Click(object sender, EventArgs e)
         {
-
+            
+            //HandleCollector a=10;
+            UserImportDLL.MessageBox(0, "hello wolrd!", "Meesage BOx title", 0);
+            //UserImportDLL.TAT_PB_Init(a);
         }
 
         private void save_Click(object sender, EventArgs e)
@@ -576,5 +590,12 @@ namespace WindowsFormsApp1
         }
 
         //Image CaptureScreen(int sourceX, int sourceY, int destX)
+    }
+    public class UserImportDLL
+    {
+        [DllImport("User32.dll")]
+        public static extern int MessageBox(int hParent, string Message, string Caption, int Type);
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_PB_Init(HandleCollector h);
     }
 }
