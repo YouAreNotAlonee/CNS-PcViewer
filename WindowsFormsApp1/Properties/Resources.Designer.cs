@@ -173,6 +173,16 @@ namespace WindowsFormsApp1.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap left_right {
+            get {
+                object obj = ResourceManager.GetObject("left_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap Less {
             get {
                 object obj = ResourceManager.GetObject("Less", resourceCulture);
@@ -266,6 +276,16 @@ namespace WindowsFormsApp1.Properties {
         internal static System.Drawing.Bitmap UnitedArrowUpDown_ {
             get {
                 object obj = ResourceManager.GetObject("UnitedArrowUpDown_", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap up_down {
+            get {
+                object obj = ResourceManager.GetObject("up_down", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

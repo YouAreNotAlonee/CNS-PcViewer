@@ -12,6 +12,7 @@ using OpenCvSharp;
 
 
 
+using OpenCvSharp;
 namespace WindowsFormsApp1
 {
     class DllImport
@@ -22,11 +23,10 @@ namespace WindowsFormsApp1
     
     }
 
-    public partial class Setting : Form
-    {
-        /*import dll*/
-        
-            /*dll import*/
+    public partial class Setting : Form       
+    {        
+        string video_path;
+
         CvCapture capture;
         int shiness;
         int exposure;
@@ -83,6 +83,7 @@ namespace WindowsFormsApp1
         }
         public Setting()
         {
+
             //IplImage img = Cv.LoadImage("imageTest.jpg");
             //IplImage img = new IplImage("imageTest.jpg");
             //img = new IplImage("imageTest.jpg", LoadMode.AnyColor);
@@ -98,7 +99,7 @@ namespace WindowsFormsApp1
             Cv.DestroyWindow("image");
             Cv.ReleaseImage(img);
             */
-            
+            video_path = path;
             InitializeComponent();
         }
 
@@ -109,15 +110,21 @@ namespace WindowsFormsApp1
             {
                 shiness = Convert.ToInt32(Shiness_label.Text) - 1;
                 Shiness_label.Text = Convert.ToString(shiness);
+
                 Shiness_R -= 10;
                 Shiness_G -= 10;
                 Shiness_B -= 10;
+
             }
         }
 
         private void Shiness_plus_Click(object sender, EventArgs e)
         {
-            
+
+            Shiness_R += 10;
+            Shiness_G += 10;
+            Shiness_B += 10;
+
             if (Convert.ToInt32(Shiness_label.Text) < 7)
             {
                 shiness = Convert.ToInt32(Shiness_label.Text) + 1;
@@ -176,11 +183,13 @@ namespace WindowsFormsApp1
             Shiness_B = 0;
         }
 
+
         private void Setting_default_Click(object sender, EventArgs e)
         {
             shiness = 6;
             exposure = 0;
             shade = 0;
+
             Setting_default_Shiness();
             flip_x = flip_y = false;
             flip_Y.Checked = flip_X.Checked = false;
@@ -194,6 +203,7 @@ namespace WindowsFormsApp1
             Setting_default_Click(null, null);
             this.Close();
         }
+
 
         private void flip_X_CheckedChanged(object sender, EventArgs e)
         {
@@ -257,5 +267,6 @@ namespace WindowsFormsApp1
             }
             return lut;
         }
+
     }
 }

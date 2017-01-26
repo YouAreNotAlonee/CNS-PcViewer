@@ -63,9 +63,111 @@ namespace WindowsFormsApp1 {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+
+        public static System.Drawing.Bitmap audio_pause_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("audio_pause.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap audio_play_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("audio_play.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap audio_step_back_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("audio_step_back.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap audio_step_forward_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("audio_step_forward.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap audio_stop_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("audio_stop.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap Camera_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("Camera.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap folder_open_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("folder_open.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap Marker_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("Marker.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap pictureBox1_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("pictureBox1.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         public static System.Drawing.Bitmap save_BackgroundImage {
             get {
                 object obj = ResourceManager.GetObject("save.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap Settings_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("Settings.BackgroundImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -87,6 +189,17 @@ namespace WindowsFormsApp1 {
             get {
                 object obj = ResourceManager.GetObject("Video_Timer.TrayLocation", resourceCulture);
                 return ((System.Drawing.Point)(obj));
+            }
+        }
+
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        public static System.Drawing.Bitmap Volume_BackgroundImage {
+            get {
+                object obj = ResourceManager.GetObject("Volume.BackgroundImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
