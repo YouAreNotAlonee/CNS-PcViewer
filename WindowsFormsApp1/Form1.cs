@@ -9,14 +9,20 @@ using System.Runtime.InteropServices;
 using Microsoft.DirectX.AudioVideoPlayback;
 using System.Threading;
 //using DirectShowLib;
+using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
 using OpenCvSharp;
 namespace WindowsFormsApp1
 {
+
     public partial class MainForm : Form
     {
         //TESTTTTTTT
-        CvCapture capture;
+        //CvCapture capture;
         IplImage imgSrc = new IplImage(640, 480, BitDepth.U8, 3);
+
+        private string video_path;
+        Device _device;
 
         private void initFileList(string curdir)
         {
@@ -29,7 +35,7 @@ namespace WindowsFormsApp1
             listView.BeginUpdate();
             listView.View = View.Details;
             //listView.LargeImageList = imagel
-
+            
             foreach(var fi in files)
             {
                 
@@ -44,7 +50,7 @@ namespace WindowsFormsApp1
             listView.EndUpdate();
         }
 
-        private bool initCamera()
+        /*private bool initCamera()
         {
             try
             {
@@ -57,7 +63,7 @@ namespace WindowsFormsApp1
             {
                 return false;
             }
-        }
+        }*/
         //video
         
         Microsoft.DirectX.AudioVideoPlayback.Video vid;
@@ -90,6 +96,7 @@ namespace WindowsFormsApp1
         {
             
         }
+
 
         private void Video_Play()
         {
@@ -147,6 +154,18 @@ namespace WindowsFormsApp1
             //VideoCapture cap1("2.mp4");
             InitializeComponent();
             
+            //디바이스 옵션
+            PresentParameters present_params = new PresentParameters();
+            present_params.Windowed = true;
+            present_params.SwapEffect = SwapEffect.Discard;
+            //디바이스 생성
+            _device = new Device(0, DeviceType.Hardware,
+                this, CreateFlags.HardwareVertexProcessing,
+                present_params);
+
+            this.Volume_Bar.us
+
+
             this.BackColor = Color.White;
             /*make mainform's background to white*/
 
@@ -185,7 +204,9 @@ namespace WindowsFormsApp1
             }//video connect with opencv
             */
             /*
-            IplImage img = Cv.LoadImage("D:\\test\\imageTest.jpg");
+            IplImage img = Cv.LoadImage("imageTest.jpg");
+            bright_image =  Cv.CreateImage(Cv.GetSize()
+            Cv.AddS(img, Cv.RGB(60,60,60), )
             Cv.NamedWindow("image");
             Cv.ShowImage("image", img);
 
@@ -200,33 +221,35 @@ namespace WindowsFormsApp1
             this.listView.Columns.Add("분 초", 60, HorizontalAlignment.Center);
             this.listView.Columns.Add("녹화타입", 80, HorizontalAlignment.Center);
         }
-        
+        public void SetData(String Data)
+        {
+            video_path = Data;
+        }
 
         private void Settings_Click(object sender, EventArgs e)
         {
-            //Setting = new Setting();
-            Setting setting = new Setting();
+            Setting setting = new Setting(video_path);    //setting 폼에 영상path 넘겨줌       
             setting.ShowDialog();
         }
 
         private void LeftRight_Scroll(object sender, EventArgs e)
         {
-            if (LeftRight.Value == 0)
+            /*if (LeftRight.Value == 0)
                 MessageBox.Show("front");
             else if (LeftRight.Value == 1)
                 MessageBox.Show("back");
             else
-                MessageBox.Show("error");
+                MessageBox.Show("error");*/
         }
 
         private void UpDown_Scroll(object sender, EventArgs e)
         {
-            if (UpDown.Value == 0)
+            /*if (UpDown.Value == 0)
                 MessageBox.Show("UP");
             else if (UpDown.Value == 1)
                 MessageBox.Show("Down");
             else
-                MessageBox.Show("Error");
+                MessageBox.Show("Error");*/
         }
 
         private void audio_step_forward_Click(object sender, EventArgs e)
@@ -301,13 +324,16 @@ namespace WindowsFormsApp1
         {
             if (vid != null)
             {
+                audio_stop.Enabled = true;
+                audio_stop.Visible = true;
+
                 audio_play.Enabled = false;
                 audio_play.Visible = false;
                 audio_stop.Enabled = true;
                 audio_stop.Visible = true;
                 audio_pause.Enabled = true;
                 audio_pause.Visible = true;
-
+                
                 Video_Timer_Enable = true;
                 Video_Play();
                 vid.Play();
@@ -323,7 +349,7 @@ namespace WindowsFormsApp1
             //audio_step_back.
         }
 
-        private void zero_dot_two_btn_Click(object sender, EventArgs e)
+        /*private void zero_dot_two_btn_Click(object sender, EventArgs e)
         {
 
         }
@@ -346,7 +372,7 @@ namespace WindowsFormsApp1
         private void two_dot_zero_btn_Click(object sender, EventArgs e)
         {
 
-        }
+        }*/
 
         private void Marker_Click(object sender, EventArgs e)
         {
@@ -385,7 +411,7 @@ namespace WindowsFormsApp1
 
         private void Camera_Click(object sender, EventArgs e)
         {
-
+            Video_Capture();
         }
 
         private void save_Click(object sender, EventArgs e)
@@ -459,11 +485,11 @@ namespace WindowsFormsApp1
                 vid.CurrentPosition = (double)(trackBar.Value / 10.0);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        /*private void timer1_Tick(object sender, EventArgs e)
         {
             imgSrc = capture.QueryFrame();
             pictureBoxIpl1.ImageIpl = imgSrc;
-        }
+        }*/
 
         private void listView_DoubleClick(object sender, EventArgs e)
         {
@@ -476,14 +502,15 @@ namespace WindowsFormsApp1
                     ListView.SelectedListViewItemCollection items = listView.SelectedItems;
                     ListViewItem lvItem = items[0];
                     string add = lvItem.SubItems[0].Text;
-                    string video_path = listView.FocusedItem.SubItems[3].Text;
+                    video_path = listView.FocusedItem.SubItems[3].Text;
+                    MessageBox.Show(video_path);
 
                     if (vid != null)
                         vid.Dispose();
                     vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
                     vid.Owner = this.video_panel;
                     video_panel.Size = Panel_Size;
-                    //vid.Play();
+
                     audio_play_Click(null, null);
                     //MessageBox.Show(add);
                 }
@@ -493,6 +520,41 @@ namespace WindowsFormsApp1
                 MessageBox.Show(exa.Message);
             }
 
+        }
+
+        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        {
+            Volume_Bar.Visible = true;
+        }
+
+        private void Volume_MouseLeave(object sender, EventArgs e)
+        {
+            //Volume_Bar.Visible = false;
+        }
+
+        private void Volume_Bar_MouseEnter(object sender, EventArgs e)
+        {
+            Volume_Bar.Visible = true;
+        }
+
+        private void Volume_VisibleChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Volume_Bar_MouseLeave(object sender, EventArgs e)
+        {
+            Volume_Bar.Visible = false;
+        }
+
+        private void videoSpeed_MouseEnter(object sender, EventArgs e)
+        {
+            videoSpeed_bar.Visible = true;
+        }
+
+        private void videoSpeed_bar_MouseLeave(object sender, EventArgs e)
+        {
+            videoSpeed_bar.Visible = false;
         }
 
         private void Parking_btn_CheckedChanged(object sender, EventArgs e)
