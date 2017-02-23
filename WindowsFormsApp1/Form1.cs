@@ -12,93 +12,374 @@ using System.Threading;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using OpenCvSharp;
+using System.Collections.Generic;
+
+
 namespace WindowsFormsApp1
 {
-    /*
-    [DllImport("TATLib.dll")]
-    public static extern int Open(char device);
-    */
 
-    
-    public partial class MainForm : Form
+    public unsafe partial class MainForm : Form
     {
-        //TESTTTTTTT
-        [DllImport("MFCLibrary1.dll")]
-        public static extern void DLL_int_insert(int _data);
-
+        Video vid;
+        int hour, minute, second, VideoDuration, VideoPosition, handle=0;
+        string Video_Time;
+        bool Video_Timer_Enable = false, Valid_FileType = false, Mute_Mode = false;
+        bool ScrollEnable = false;
+        bool P_check = true, E_check = true, N_check = true, M_check = true;//리스트 뷰 위 체크박스 플래그 //parking Event Normal
+        char Eevnet = (char)0, Nnormal = (char)0, Pparking = (char)0, Bbackup = (char)0, Rreserve = (char)0;
+        /// <summary>
+        /// openCV 이미지
+        /// </summary>
         CvCapture capture;
-
         IplImage imgSrc = new IplImage(640, 480, BitDepth.U8, 3);
-
         private string video_path;
         Device _device;
 
+        /// <summary>
+        /// TATLib에 필요한 함수와 인자들 
+        /// </summary>
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Create();
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Delete(int handle);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Open(int handle, byte* device);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Close(int handle, int fp);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Read(int handle, int fp, long pos, byte* data, int size);//
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Write(int handle, int fp, long pos, int bytes, byte* data, int size);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Format(int handle);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Check_Tat_Device(int handle, byte* device);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Check_Version();//TATLib.h에 없음
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Get_File_Frame_Cnt(int handle, char mode, ref byte fname, ref int front, ref int rear);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Get_File_Index_info(int handle, char mode, ref byte fname, ref FileInfo f_info); //기존 TATLib에서는 마지막 인자가 FILE_INFO *f_info 이다 이게 맞나?
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Get_File_Cnt(int handle, char mode);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Get_File_List(int handle, char mode, int list_cnt, ref byte fname, ref int findex, ref int fsize);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Get_File_List_tt(int handle, char mode, int list_cnt, byte[] fname, int[] findex, int[] fsize, int[] ftime);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Get_File_Flag(int handle, char* Eevent, char* Nnormal, char* Pparking, char* Rreserv);
+        //        public static extern bool TAT_Get_File_Flag(int handle, char device, ref byte Eevent, ref byte Nnormal, ref byte Pparking);
+
+        [DllImport("TATLib.dll")]
+        public static extern char TAT_Find_Start_Stop(int handle, int fp, char mode, int* start, ref int stop, ref int last_pos);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Get_PB_Pos(int handle, char mode, byte* file);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Get_Seek_Pos(int handle, char seek, char total);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Set_PcFolder(int handle, byte* folder);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_PB_Init(int handle);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_PB_DeInit(int handle);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_PB_Start(int handle, char mode, char ch, int pb_pos);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_PB_Stop(int handle);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_FAT_PB_Start(int handle, byte* file, int* frame_cnt);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_FAT_PB_Stop(int handle);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Read_Frame(int handle, byte* ch, byte* p_type, int* size, byte* data, int* timestamp);
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Make_Avi_File(int handle, string fname);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Make_Play_File();//TATLib에 없음
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Make_Tat_File();//TATLib에 없음
+
+        [DllImport("TATLib.dll")]
+        public static extern int TAT_Make_Data_File(int handle, byte* fname, int* frame_cnt, ref byte gps_data, char tat, ref char fps, ref int width, ref int height);
+
+        [DllImport("TATLib.dll")]
+        public static extern bool TAT_Set_Config_Data(int handle, byte* data, int* size);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Get_Config_Data(int handle, byte* data, int* size);
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Get_Device_Name();//TATLib에 없음
+
+        [DllImport("TATLib.dll")]
+        public static extern void TAT_Make_Picture_File();//TATLib에 없음
+
+        
+        /// <summary>
+        /// TAT 관련 영상들이 어떤 드라이브에 있는지를 리턴
+        /// </summary>
+        /// <returns>드라이브명</returns>
+        private string TAT_device()
+        {
+            bool result = false;
+            //int handle = 0;
+            byte dev_num = 0;
+            string path = null;
+            handle = TAT_Create();
+            result = TAT_Check_Tat_Device(handle, &dev_num);//원래 ref dev_num
+            MessageBox.Show(result.ToString());
+            MessageBox.Show(dev_num.ToString());
+
+            if (dev_num == 2)
+                path = "D\\: 에 TAT파일이 있습니다.";
+            else if (dev_num == 3)
+                path = "E\\: 에 TAT파일이 있습니다.";
+            else if (dev_num == 4)
+                path = "F\\: 에 TAT파일이 있습니다.";
+            else
+                MessageBox.Show("TAT file doesn't exist");
+            return path;
+        }
+
+        private void TAT_showlist()
+        {
+            listView.Clear();
+            int mode_0 = 254, mode_1 = 254, mode_2 = 254, mode_3 = 254, mode = 254, file_num=1, file_cnt;
+            unsafe
+            {
+                fixed (char* a = &Eevent)
+                {
+                    fixed (char* b = &Nnormal)
+                    {
+                        fixed (char* c = &Pparking)
+                        {
+                            fixed (char* d = &Rreserve)
+                                TAT_Get_File_Flag(0, a, b, c, d);
+                        }
+                    }
+                }
+            }
+            mode_0 = TAT_Get_File_Cnt(handle, (char)0);
+            mode_1 = TAT_Get_File_Cnt(handle, (char)1);
+            mode_2 = TAT_Get_File_Cnt(handle, (char)2);
+            mode_3 = TAT_Get_File_Cnt(handle, (char)3);
+            file_cnt = mode_0 + mode_1 + mode_2 + mode_3;
+            byte[] list_name_arr = new byte[40 * file_cnt];
+            int[] list_index_arr = new int[sizeof(int) * file_cnt];
+            int[] list_size_arr = new int[sizeof(int) * file_cnt];
+            int[] list_time_arr = new int[sizeof(int) * file_cnt];
+            //위에 있는 byte형 포인터 1개와 int형포인터 3개를 변환할 배열
+
+            file_sum += TAT_Get_File_List_tt(handle, (char)0, mode_0, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
+            file_sum += TAT_Get_File_List_tt(handle, (char)1, mode_1, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
+            file_sum += TAT_Get_File_List_tt(handle, (char)2, mode_2, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
+            file_sum += TAT_Get_File_List_tt(handle, (char)3, mode_3, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
+            ///////
+            //문자열 배열 테스트
+            string[] name = new string[file_cnt];
+            string[] Only_name = new string[file_cnt];
+            int k = 0;
+            string temp = null;
+            //////
+            for (int i = 0; i < list_name_arr.Length; i++)
+            {
+                //Console.Write(Convert.ToChar(list_name_arr[i]));
+                
+                
+                temp +=Convert.ToChar(list_name_arr[i]);
+                
+                if (i == file_num * 40 - 1)
+                {
+                    //Console.WriteLine("");
+                    file_num++;
+                    
+                    //string temp_name = "";
+                    name[k] = temp;
+                    k++;
+                    temp = null;
+                }
+            }
+            for (int i = 0; i < name.Length; i++)
+                Console.WriteLine(i + "번째 파일 : " + name[i]);
+            for (int i = 0; i < file_cnt; i++)
+            {
+                Only_name[i] = name[i].Substring(1,16);//확장자 전까지 자름
+                Console.WriteLine(i + "번째 파일 : " + Only_name[i]);
+            }
+            //이름만 추출
+
+            for (int jj = 0; jj < file_sum; jj++)
+            {
+                //note:마지막문자를 기준으로 나누자
+                //원래는 char배열인데, string으로 바꿔서 동영상의 분류 문자를 끝으로 파일명을 자름
+                /*
+                if (Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'e' || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'E')
+                    mode = 0;
+                else if (Convert.ToChar(list_name_arr[jj * 40 + 16]).Equals('N') || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'R' || Convert.ToChar(list_name_arr[jj * 40 + 16]).Equals('I'))
+                    mode = 1;
+                else if (Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'M' || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'P')
+                    mode = 2;
+                else if (Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'U' || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'J')
+                    mode = 3;
+                */
+                if (Only_name[jj].EndsWith("E") || Only_name[jj].EndsWith("e"))
+                    mode = 0;
+                else if (Only_name[jj].EndsWith("N") || Only_name[jj].EndsWith("R") || Only_name[jj].EndsWith("I"))
+                    mode = 1;
+                else if (Only_name[jj].EndsWith("M") || Only_name[jj].EndsWith("P"))
+                    mode = 2;
+                else if (Only_name[jj].EndsWith("U") || Only_name[jj].EndsWith("J"))
+                    mode = 3;
+
+                if (mode == 0)
+                {
+                    /*
+                    string n = null;
+                    for (int i = 0; i < jj * 40 + 36; i++)
+                        n += Convert.ToChar(list_name_arr[i]);
+
+                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
+
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                    *///char배열을 사용했을때의 리스트 삽입
+                    ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
+                    //ListViewItem lvi = new ListViewItem(Only_name[jj]+"avi");//첫번째 인자는 파일의 이름(확장자 포함)
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                }
+                else if (mode == 1)
+                {
+                    /*
+                    string n = null;
+                    for (int i = 0; i < jj * 40 + 36; i++)
+                        n += Convert.ToChar(list_name_arr[i]);
+                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
+
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                    */
+                    ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                }
+                else if (mode == 2)
+                {
+                    /*
+                    string n = null;
+                    for (int i = 0; i < jj * 40 + 36; i++)
+                        n += Convert.ToChar(list_name_arr[i]);
+
+                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
+
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)).ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                    */
+                    ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                }
+                else if (mode == 3)
+                {
+                    /*
+                    string n = null;
+                    for (int i = 0; i < jj * 40 + 36; i++)
+                        n += Convert.ToChar(list_name_arr[i]);
+
+                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
+
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)).ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                    */
+                    ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
+                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add("nnnn");//절대경로
+                    lvi.ImageIndex = 0;
+                    listView.Items.Add(lvi);
+                }
+                listView.EndUpdate();
+            }
+        }
+
         private void initFileList(string curdir)
         {
-            /*string curdir = Environment.CurrentDirectory;
-            DirectoryInfo di = new DirectoryInfo(curdir);*/
-            //string curdir = @"D:\testvideo";
             DirectoryInfo di = new DirectoryInfo(curdir);
-            
             FileInfo[] files = di.GetFiles();
             listView.BeginUpdate();
             listView.View = View.Details;
-            //listView.LargeImageList = imagel
-            
+            string f_name, f_extention;
             foreach(var fi in files)
             {
-                
-                ListViewItem lvi = new ListViewItem(fi.Name);
-                lvi.SubItems.Add(fi.Length.ToString());
-                lvi.SubItems.Add(fi.LastWriteTime.ToString());
-                lvi.SubItems.Add(fi.FullName);
+                f_name = Path.GetFileNameWithoutExtension(fi.ToString());
+                f_extention = Path.GetExtension(fi.ToString());
+
+                if (f_extention == ".zip")
+                    continue;
+                //일단 zip파일만 거르게 해놓았음
+                //추가로 확장자를 넣어주면 됨
+                ListViewItem lvi = new ListViewItem(f_name);//첫번째 인자는 파일의 이름(확장자 제외)
+
+                lvi.SubItems.Add(fi.Length.ToString());//파일크기
+                lvi.SubItems.Add(f_extention);//확장자
+                lvi.SubItems.Add(fi.FullName);//절대경로
                 lvi.ImageIndex = 0;
                 listView.Items.Add(lvi);
-                //MessageBox.Show(fi.FullName);
             }
             listView.EndUpdate();
         }
-
-        /*private bool initCamera()
-        {
-            try
-            {
-                capture = CvCapture.FromFile("D:\\test\\imageTest.jpg");
-                capture.SetCaptureProperty(CaptureProperty.FrameWidth, 680);
-                capture.SetCaptureProperty(CaptureProperty.FrameHeight, 480);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }*/
-        //video
         
-        Microsoft.DirectX.AudioVideoPlayback.Video vid;
-        int hour, minute, second, VideoDuration, VideoPosition;
-        string Video_Time;
-        bool Video_Timer_Enable= false, Valid_FileType = false, Mute_Mode = false;
-        bool ScrollEnable = false;
-        //Size VideoDefaultSize;
-        
-        //IGraphBuilder pGraphBuilder = null;
-        //IMediaControl pMediaControl = null;
-
-        //IMediaEvent pMediaEvent = null;
-        //EventCode eventCode;
-        
-        //IVideoWindow pVideoWindow = null;
         private void Video_Stop()
         {
-            /*Marshal.ReleaseComObject(pGraphBuilder);
-            pGraphBuilder = null;
-            Marshal.ReleaseComObject(pMediaControl);
-            pMediaControl = null;
-            Marshal.ReleaseComObject(pMediaEvent);
-            pMediaEvent = null;
-            Marshal.ReleaseComObject(pVideoWindow);
-            pVideoWindow = null;*/
+            
         }
 
         private void Video_Capture()
@@ -106,18 +387,9 @@ namespace WindowsFormsApp1
             
         }
 
-
         private void Video_Play()
         {
-            //vid.Size.Width = video_panel.Size.Width;
             vid.Size = video_panel.Size;
-
-            /*VideoDefaultSize = vid.DefaultSize;
-            int W = Math.Max(VideoDefaultSize.Width, this.ClientSize.Width);
-            int H = VideoDefaultSize.Height;
-            Aspect = (double)((double)VideoDefaultSize.Width / (float)VideoDefaultSize.Height);
-            */
-
             if (Mute_Mode)
                 vid.Audio.Volume = -100;
             else
@@ -138,31 +410,11 @@ namespace WindowsFormsApp1
 
             Video_Time = HH + ":" + MM + ":" + SS;
             VideoTime.Text = "/   " + Video_Time;
-            
-            /*pGraphBuilder = (IGraphBuilder)new FilterGraph();
-
-            pMediaControl = (IMediaControl)pGraphBuilder;
-
-            pMediaEvent = (IMediaEvent)pGraphBuilder;
-
-            pVideoWindow = (IVideoWindow)pGraphBuilder;
-
-            pMediaControl.RenderFile("test.wmv");
-
-            pVideoWindow.put_Owner(video_panel.Handle);
-            pVideoWindow.put_WindowStyle(WindowStyle.Child | WindowStyle.ClipSiblings);
-            Rectangle rect = video_panel.ClientRectangle;
-            pVideoWindow.SetWindowPosition(0, 0, rect.Right, rect.Bottom);
-
-            pMediaControl.Run();
-            */
         }
-        /*video test*/
+        
         public MainForm()
         {
-            //VideoCapture cap1("2.mp4");
             InitializeComponent();
-            
             //디바이스 옵션
             PresentParameters present_params = new PresentParameters();
             present_params.Windowed = true;
@@ -171,9 +423,6 @@ namespace WindowsFormsApp1
             _device = new Device(0, DeviceType.Hardware,
                 this, CreateFlags.HardwareVertexProcessing,
                 present_params);
-
-            //this.Volume_Bar.us
-
 
             this.BackColor = Color.White;
             /*make mainform's background to white*/
@@ -192,8 +441,11 @@ namespace WindowsFormsApp1
             /*make button's line transparent*/
 
             Video_Timer.Enabled = true;
-            
+
+            timer1.Interval = 1;
+            timer1.Enabled = true;
         }
+        
        private void StartTimer()
         {
             timer1.Interval = 33;
@@ -201,34 +453,14 @@ namespace WindowsFormsApp1
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-//            initFileList();
-            /*
-            if(initCamera())
-            {
-                StartTimer();
-            }
-            else
-            {
-                MessageBox.Show("can't connect");
-            }//video connect with opencv
-            */
-            /*
-            IplImage img = Cv.LoadImage("imageTest.jpg");
-            bright_image =  Cv.CreateImage(Cv.GetSize()
-            Cv.AddS(img, Cv.RGB(60,60,60), )
-            Cv.NamedWindow("image");
-            Cv.ShowImage("image", img);
-
-            Cv.WaitKey();
-            Cv.DestroyWindow("image");
-            Cv.ReleaseImage(img);
-            */
-
+            GSensor_Chart();
+            TAT_device();
+            TAT_showlist();
             this.listView.View = View.Details;
-            this.listView.Columns.Add("날짜", 100, HorizontalAlignment.Center);
-            this.listView.Columns.Add("시", 60, HorizontalAlignment.Center);
-            this.listView.Columns.Add("분 초", 60, HorizontalAlignment.Center);
-            this.listView.Columns.Add("녹화타입", 80, HorizontalAlignment.Center);
+            this.listView.Columns.Add("파일이름", 100, HorizontalAlignment.Center);
+            this.listView.Columns.Add("파일크기", 60, HorizontalAlignment.Center);
+            this.listView.Columns.Add("확장자", 60, HorizontalAlignment.Center);
+            this.listView.Columns.Add("상대경로", 80, HorizontalAlignment.Center);
         }
         public void SetData(String Data)
         {
@@ -243,22 +475,12 @@ namespace WindowsFormsApp1
 
         private void LeftRight_Scroll(object sender, EventArgs e)
         {
-            /*if (LeftRight.Value == 0)
-                MessageBox.Show("front");
-            else if (LeftRight.Value == 1)
-                MessageBox.Show("back");
-            else
-                MessageBox.Show("error");*/
+            
         }
 
         private void UpDown_Scroll(object sender, EventArgs e)
         {
-            /*if (UpDown.Value == 0)
-                MessageBox.Show("UP");
-            else if (UpDown.Value == 1)
-                MessageBox.Show("Down");
-            else
-                MessageBox.Show("Error");*/
+
         }
 
         private void audio_step_forward_Click(object sender, EventArgs e)
@@ -269,34 +491,14 @@ namespace WindowsFormsApp1
             if (listView.SelectedItems.Count == 1)
             {
                 ListView.SelectedListViewItemCollection items = listView.SelectedItems;
-                //listView.SelectedIndices += 1;
-                /*test*/
                 ListView.SelectedIndexCollection indexes = this.listView.SelectedIndices;
                 var SelectedItem = listView.SelectedItems[0];
                 int selectedIndex = listView.Items.IndexOf(SelectedItem);
-                //if (selectedIndex >= listView.Items.Count)
-                //selectedIndex++;
                 listView.Items[selectedIndex].Selected = false;
                 listView.Items[selectedIndex + 1].Selected = true;
                 listView.Select();
-                
-                /*endtest*/
-                /*
-                ListViewItem lvItem = items[0];
-                string add = lvItem.SubItems[0].Text;
-                string video_path = listView.FocusedItem.SubItems[3].Text;
-
-                if (vid != null)
-                    vid.Dispose();
-                vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
-                vid.Owner = this.video_panel;
-                video_panel.Size = Panel_Size;
-                //vid.Play();*/
                 audio_play_Click(null, null);
-                //MessageBox.Show(add);
-                
             }
-            //vid.
         }
 
         private void audio_pause_Click(object sender, EventArgs e)
@@ -305,8 +507,10 @@ namespace WindowsFormsApp1
             {
                 audio_play.Enabled = true;
                 audio_play.Visible = true;
+
                 audio_stop.Enabled = true;
                 audio_stop.Visible = true;
+
                 audio_pause.Enabled = false;
                 audio_pause.Visible = false;
 
@@ -321,8 +525,10 @@ namespace WindowsFormsApp1
             {
                 audio_play.Enabled = true;
                 audio_play.Visible = true;
+
                 audio_stop.Enabled = false;
                 audio_stop.Visible = false;
+
                 audio_pause.Enabled = true;
                 audio_pause.Visible = true;
                 vid.Stop();
@@ -338,13 +544,13 @@ namespace WindowsFormsApp1
 
                 audio_play.Enabled = false;
                 audio_play.Visible = false;
-                audio_stop.Enabled = true;
-                audio_stop.Visible = true;
+
                 audio_pause.Enabled = true;
                 audio_pause.Visible = true;
                 
                 Video_Timer_Enable = true;
-                Video_Play();
+
+                Video_Play();//비디오의 총 길이 반환
                 vid.Play();
             }
             else
@@ -355,38 +561,11 @@ namespace WindowsFormsApp1
 
         private void audio_step_back_Click(object sender, EventArgs e)
         {
-            //audio_step_back.
+            
         }
-
-        /*private void zero_dot_two_btn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void zero_dot_five_btn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void one_dot_zero_btn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void one_dot_five_btn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void two_dot_zero_btn_Click(object sender, EventArgs e)
-        {
-            DLL_int_insert(10);
-        }
-        }*/
 
         private void Marker_Click(object sender, EventArgs e)
         {
-            
             String city = "Seoul";
             String state = "";
             String country = "";
@@ -396,21 +575,17 @@ namespace WindowsFormsApp1
             add.Append(country);
             webBrowser.Navigate(add.ToString());
             webBrowser.Navigate("http://52.78.22.120:5000/map");
-
         }
 
         private void folder_open_Click(object sender, EventArgs e)
         {
             string curdir;
-            //OpenFileDialog of = new OpenFileDialog();
             FolderBrowserDialog fd = new FolderBrowserDialog();
-            fd.SelectedPath = @"D:\testvideo\";
-            //fd.RootFolder = System.Environment.SpecialFolder("D:\");
-                
-            if (fd.ShowDialog() == DialogResult.OK)
+            fd.SelectedPath = @"D:\testvideo\";//deafult 디렉토리 설정
+
+            if (fd.ShowDialog() == DialogResult.OK) // 확인을 눌렀을 때
             {
                 curdir = fd.SelectedPath;
-                //curdir = fd.FileName;
                 initFileList(curdir);
             }
             else
@@ -418,40 +593,20 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Select Folder");
             }
         }
+        int file_sum = 0;
+        char Eevent = (char)0;
 
-        private void Camera_Click(object sender, EventArgs e)
+        unsafe private void Camera_Click(object sender, EventArgs e)
         {
             
-            //HandleCollector a=10;
-            UserImportDLL.MessageBox(0, "hello wolrd!", "Meesage BOx title", 0);
-            //UserImportDLL.TAT_PB_Init(a);
-
         }
 
         private void save_Click(object sender, EventArgs e)
         {
-
+            //TAT_Make_Avi_File(handle, )
         }
 
-        private void Dirve_btn_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Dirve_btn.Checked)
-                MessageBox.Show("drive checked");
-            else if (!Dirve_btn.Checked)
-                MessageBox.Show("drive unchecked");
-            else
-                MessageBox.Show("drive button error");
-        }
-
-        private void Event_btn_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Event_btn.Checked)
-                MessageBox.Show("Event checked");
-            else if (!Event_btn.Checked)
-                MessageBox.Show("Event unchecked");
-            else
-                MessageBox.Show("drive button error");
-        }
+        
 
         private void trackBar_Scroll(object sender, EventArgs e)
         {
@@ -499,16 +654,11 @@ namespace WindowsFormsApp1
                 vid.CurrentPosition = (double)(trackBar.Value / 10.0);
         }
 
-        /*private void timer1_Tick(object sender, EventArgs e)
-        {
-            imgSrc = capture.QueryFrame();
-            pictureBoxIpl1.ImageIpl = imgSrc;
-        }*/
-
         private void listView_DoubleClick(object sender, EventArgs e)
         {
             System.Drawing.Size Panel_Size;
             Panel_Size = video_panel.Size;
+            /*
             try
             {
                 if (listView.SelectedItems.Count == 1)
@@ -526,14 +676,78 @@ namespace WindowsFormsApp1
                     video_panel.Size = Panel_Size;
 
                     audio_play_Click(null, null);
-                    //MessageBox.Show(add);
                 }
             }
             catch(Exception exa)
             {
                 MessageBox.Show(exa.Message);
             }
+            */
+            /////기존 avi를 재생할때의 코드
 
+
+            ///tat재생
+            ///
+            try
+            {
+                if (listView.SelectedItems.Count == 1)
+                {
+                    ListView.SelectedListViewItemCollection items = listView.SelectedItems;
+                    ListViewItem lvItem = items[0];
+                    string add = lvItem.SubItems[0].Text;
+                    
+                    string fname;
+                    fname = listView.FocusedItem.SubItems[0].Text;
+                    TAT_Make_Avi_File(handle, fname);
+
+                    video_path =Application.StartupPath +@"./" + fname;
+                    if (vid != null)
+                        vid.Dispose();
+                    vid = new Microsoft.DirectX.AudioVideoPlayback.Video(video_path);
+                    vid.Owner = this.video_panel;
+                    video_panel.Size = Panel_Size;
+
+                    audio_play_Click(null, null);
+                }
+            }
+            catch (Exception exa)
+            {
+                MessageBox.Show(exa.Message);
+            }
+        }
+        private void GSensor_Chart()
+        {
+            Gsensor.ChartAreas.Add("Gsensor");
+            Gsensor.ChartAreas["Xaxis"].AxisX.Minimum = 0;
+            Gsensor.ChartAreas["Xaxis"].AxisX.Maximum = 100;
+            Gsensor.ChartAreas["Yaxis"].AxisY.Minimum = 0;
+            Gsensor.ChartAreas["Yaxis"].AxisY.Maximum = 100;
+            Gsensor.Series.Add("Xaxis");
+            Gsensor.Series["Xaxis"].ChartArea = "Gsensor";
+            Gsensor.Series["Xaxis"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+
+            Gsensor.Series.Add("Yaxis");
+            Gsensor.Series["Yaxis"].ChartArea = "Gsensor";
+            Gsensor.Series["Yaxis"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+
+            Gsensor.Series.Add("Zaxis");
+            Gsensor.Series["Zaxis"].ChartArea = "Gsensor";
+            Gsensor.Series["Zaxis"].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+
+            Gsensor.ChartAreas["Xaxis"].AxisX.Minimum = 0;
+            Gsensor.ChartAreas["Xaxis"].AxisX.Maximum = 100;
+            Gsensor.ChartAreas["Yaxis"].AxisY.Minimum = 0;
+            Gsensor.ChartAreas["Yaxis"].AxisY.Maximum = 100;
+
+            Random rand = new Random();
+
+            for(int i=0; i<100; i++)
+            {
+                Gsensor.Series["Xaxis"].Points.Add(rand.Next(500));
+                Gsensor.Series["Yaxis"].Points.Add(rand.Next(500));
+                Gsensor.Series["Zaxis"].Points.Add(rand.Next(500));
+            }
+      
         }
 
         private void pictureBox2_MouseEnter(object sender, EventArgs e)
@@ -543,12 +757,15 @@ namespace WindowsFormsApp1
 
         private void Volume_MouseLeave(object sender, EventArgs e)
         {
-            //Volume_Bar.Visible = false;
         }
 
         private void Volume_Bar_MouseEnter(object sender, EventArgs e)
         {
             Volume_Bar.Visible = true;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
         }
 
         private void Volume_VisibleChanged(object sender, EventArgs e)
@@ -563,7 +780,7 @@ namespace WindowsFormsApp1
 
         private void videoSpeed_MouseEnter(object sender, EventArgs e)
         {
-            videoSpeed_bar.Visible = true;
+            
         }
 
         private void videoSpeed_bar_MouseLeave(object sender, EventArgs e)
@@ -571,24 +788,77 @@ namespace WindowsFormsApp1
             videoSpeed_bar.Visible = false;
         }
 
+        private void videoSpeed_MouseMove(object sender, MouseEventArgs e)
+        {
+            videoSpeed_bar.Visible = true;
+        }
+
+        private void Dirve_btn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Dirve_btn.Checked)
+            { 
+                MessageBox.Show("drive checked");
+                N_check = true;
+            }
+            else if (!Dirve_btn.Checked)
+            { 
+                MessageBox.Show("drive unchecked");
+                N_check = false;
+            }
+            else
+                MessageBox.Show("drive button error");
+            TAT_showlist();
+        }
+
+        private void Event_btn_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Event_btn.Checked)
+            { 
+                MessageBox.Show("Event checked");
+                E_check = true;
+            }
+            else if (!Event_btn.Checked)
+            { 
+                MessageBox.Show("Event unchecked");
+                E_check = false;
+            }
+            else
+                MessageBox.Show("drive button error");
+            TAT_showlist();
+        }
+
         private void Parking_btn_CheckedChanged(object sender, EventArgs e)
         {
             if (Parking_btn.Checked)
+            { 
                 MessageBox.Show("Parking checked");
+                P_check = true;
+            }
             else if (!Parking_btn.Checked)
+            { 
                 MessageBox.Show("parking uncheked");
+                P_check = false;
+            }
             else
                 MessageBox.Show("drive button error");
+            TAT_showlist();
         }
 
         private void Camera_btn_CheckedChanged(object sender, EventArgs e)
         {
             if (Camera_btn.Checked)
+            { 
                 MessageBox.Show("camera checked");
+                M_check = true;
+            }
             else if (!Camera_btn.Checked)
+            { 
                 MessageBox.Show("camera unchecked");
+                M_check = false;
+            }
             else
                 MessageBox.Show("camera button error");
+            TAT_showlist();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -638,26 +908,21 @@ namespace WindowsFormsApp1
                 
                 if (curTime.Text == Video_Time)
                     audio_stop_Click(null, null);
-                    
             }
         }
 
         private void CheckVideo(string VideoFile)
         {
+            
             if(VideoFile.Length != 0 )
             {
+                if (Path.GetExtension(VideoFile) == ".avi")
+                    Valid_FileType = true;
+                /*
                 if (VideoFile.EndsWith(".avi") || VideoFile.EndsWith(".wmv"))
                     Valid_FileType = true;
+                    */
             }
         }
-
-        //Image CaptureScreen(int sourceX, int sourceY, int destX)
-    }
-    public class UserImportDLL
-    {
-        [DllImport("User32.dll")]
-        public static extern int MessageBox(int hParent, string Message, string Caption, int Type);
-        [DllImport("TATLib.dll")]
-        public static extern void TAT_PB_Init(HandleCollector h);
     }
 }
