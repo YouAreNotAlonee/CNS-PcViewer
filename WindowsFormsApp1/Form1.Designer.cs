@@ -30,6 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.Volume_Bar = new System.Windows.Forms.TrackBar();
             this.label6 = new System.Windows.Forms.Label();
@@ -38,7 +43,6 @@
             this.Event_btn = new System.Windows.Forms.CheckBox();
             this.Parking_btn = new System.Windows.Forms.CheckBox();
             this.Camera_btn = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.video_panel = new System.Windows.Forms.Panel();
             this.Video_Timer = new System.Windows.Forms.Timer(this.components);
             this.webBrowser = new System.Windows.Forms.WebBrowser();
@@ -50,10 +54,7 @@
             this.VideoTime = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.videoSpeed = new System.Windows.Forms.Button();
-            this.videoSpeed_bar = new System.Windows.Forms.TrackBar();
-            this.pictureBoxIpl1 = new OpenCvSharp.UserInterface.PictureBoxIpl();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.Volume = new System.Windows.Forms.PictureBox();
             this.audio_step_back = new System.Windows.Forms.Button();
@@ -61,23 +62,22 @@
             this.audio_stop = new System.Windows.Forms.Button();
             this.audio_step_forward = new System.Windows.Forms.Button();
             this.audio_pause = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.videoSpeed_bar = new System.Windows.Forms.TrackBar();
             this.Marker = new System.Windows.Forms.Button();
             this.folder_open = new System.Windows.Forms.Button();
             this.Camera = new System.Windows.Forms.Button();
             this.save = new System.Windows.Forms.Button();
             this.Settings = new System.Windows.Forms.Button();
+            this.Gsensor = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.Volume_Bar)).BeginInit();
             this.video_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.videoSpeed_bar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIpl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Volume)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.videoSpeed_bar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Gsensor)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -86,11 +86,10 @@
             this.label1.Font = new System.Drawing.Font("문체부 제목 돋음체", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.Location = new System.Drawing.Point(0, 1);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 27);
+            this.label1.Size = new System.Drawing.Size(81, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "VIEWER";
             // 
-
             // Volume_Bar
             // 
             this.Volume_Bar.LargeChange = 1;
@@ -98,9 +97,7 @@
             this.Volume_Bar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Volume_Bar.Maximum = 100;
             this.Volume_Bar.Name = "Volume_Bar";
-
-            this.Volume_Bar.Size = new System.Drawing.Size(175, 56);
-
+            this.Volume_Bar.Size = new System.Drawing.Size(175, 45);
             this.Volume_Bar.TabIndex = 18;
             this.Volume_Bar.Value = 50;
             this.Volume_Bar.Visible = false;
@@ -113,32 +110,29 @@
             this.label6.Font = new System.Drawing.Font("굴림", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label6.Location = new System.Drawing.Point(12, 522);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(131, 37);
+            this.label6.Size = new System.Drawing.Size(103, 29);
             this.label6.TabIndex = 23;
             this.label6.Text = "G 센서";
             // 
-
             // listView
             // 
-            this.listView.Location = new System.Drawing.Point(888, 51);
+            this.listView.Location = new System.Drawing.Point(1020, 40);
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(324, 301);
+            this.listView.Size = new System.Drawing.Size(361, 390);
             this.listView.TabIndex = 33;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             // 
-
             // Dirve_btn
             // 
             this.Dirve_btn.AutoSize = true;
             this.Dirve_btn.Checked = true;
             this.Dirve_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Dirve_btn.Font = new System.Drawing.Font("굴림", 12F);
-
-            this.Dirve_btn.Location = new System.Drawing.Point(1015, 13);
+            this.Dirve_btn.Location = new System.Drawing.Point(1027, 13);
             this.Dirve_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Dirve_btn.Name = "Dirve_btn";
-            this.Dirve_btn.Size = new System.Drawing.Size(71, 24);
+            this.Dirve_btn.Size = new System.Drawing.Size(59, 20);
             this.Dirve_btn.TabIndex = 42;
             this.Dirve_btn.Text = "상시";
             this.Dirve_btn.UseVisualStyleBackColor = true;
@@ -150,11 +144,10 @@
             this.Event_btn.Checked = true;
             this.Event_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Event_btn.Font = new System.Drawing.Font("굴림", 12F);
-
-            this.Event_btn.Location = new System.Drawing.Point(1099, 13);
+            this.Event_btn.Location = new System.Drawing.Point(1111, 13);
             this.Event_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Event_btn.Name = "Event_btn";
-            this.Event_btn.Size = new System.Drawing.Size(91, 24);
+            this.Event_btn.Size = new System.Drawing.Size(75, 20);
             this.Event_btn.TabIndex = 43;
             this.Event_btn.Text = "이벤트";
             this.Event_btn.UseVisualStyleBackColor = true;
@@ -166,11 +159,10 @@
             this.Parking_btn.Checked = true;
             this.Parking_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Parking_btn.Font = new System.Drawing.Font("굴림", 12F);
-
-            this.Parking_btn.Location = new System.Drawing.Point(1205, 13);
+            this.Parking_btn.Location = new System.Drawing.Point(1217, 13);
             this.Parking_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Parking_btn.Name = "Parking_btn";
-            this.Parking_btn.Size = new System.Drawing.Size(71, 24);
+            this.Parking_btn.Size = new System.Drawing.Size(59, 20);
             this.Parking_btn.TabIndex = 44;
             this.Parking_btn.Text = "주차";
             this.Parking_btn.UseVisualStyleBackColor = true;
@@ -182,35 +174,22 @@
             this.Camera_btn.Checked = true;
             this.Camera_btn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.Camera_btn.Font = new System.Drawing.Font("굴림", 12F);
-
-            this.Camera_btn.Location = new System.Drawing.Point(1294, 13);
+            this.Camera_btn.Location = new System.Drawing.Point(1306, 13);
             this.Camera_btn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Camera_btn.Name = "Camera_btn";
-            this.Camera_btn.Size = new System.Drawing.Size(91, 24);
+            this.Camera_btn.Size = new System.Drawing.Size(75, 20);
             this.Camera_btn.TabIndex = 45;
             this.Camera_btn.Text = "카메라";
             this.Camera_btn.UseVisualStyleBackColor = true;
             this.Camera_btn.CheckedChanged += new System.EventHandler(this.Camera_btn_CheckedChanged);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 357);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 46);
-            this.button1.TabIndex = 48;
-            this.button1.Text = "Select Video";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-
             // video_panel
             // 
             this.video_panel.Controls.Add(this.Volume_Bar);
-            this.video_panel.Location = new System.Drawing.Point(89, 31);
+            this.video_panel.Location = new System.Drawing.Point(4, 26);
             this.video_panel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.video_panel.Name = "video_panel";
-            this.video_panel.Size = new System.Drawing.Size(805, 378);
+            this.video_panel.Size = new System.Drawing.Size(1004, 485);
             this.video_panel.TabIndex = 46;
             // 
             // Video_Timer
@@ -219,21 +198,23 @@
             // 
             // webBrowser
             // 
-            this.webBrowser.Location = new System.Drawing.Point(888, 357);
+            this.webBrowser.Location = new System.Drawing.Point(1020, 436);
             this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser.Name = "webBrowser";
-
-            this.webBrowser.Size = new System.Drawing.Size(361, 450);
+            this.webBrowser.Size = new System.Drawing.Size(361, 402);
             this.webBrowser.TabIndex = 50;
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label2
             // 
-
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("굴림", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.Location = new System.Drawing.Point(98, 862);
+            this.label2.Location = new System.Drawing.Point(922, 127);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(94, 34);
+            this.label2.Size = new System.Drawing.Size(75, 27);
             this.label2.TabIndex = 17;
             this.label2.Text = "km/h";
             // 
@@ -243,7 +224,7 @@
             this.trackBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 1);
             this.trackBar.Maximum = 100;
             this.trackBar.Name = "trackBar";
-            this.trackBar.Size = new System.Drawing.Size(592, 56);
+            this.trackBar.Size = new System.Drawing.Size(592, 45);
             this.trackBar.TabIndex = 40;
             this.trackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBar.Scroll += new System.EventHandler(this.trackBar_Scroll);
@@ -258,40 +239,44 @@
             this.Speed_tbox.BackColor = System.Drawing.SystemColors.ControlDark;
             this.Speed_tbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Speed_tbox.Font = new System.Drawing.Font("굴림", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Speed_tbox.Location = new System.Drawing.Point(17, 845);
+            this.Speed_tbox.Location = new System.Drawing.Point(838, 113);
             this.Speed_tbox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Speed_tbox.Name = "Speed_tbox";
-            this.Speed_tbox.Size = new System.Drawing.Size(78, 51);
+            this.Speed_tbox.Size = new System.Drawing.Size(78, 41);
             this.Speed_tbox.TabIndex = 16;
             // 
             // curTime
             // 
-            this.curTime.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.curTime.BackColor = System.Drawing.SystemColors.Control;
             this.curTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.curTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.curTime.Location = new System.Drawing.Point(757, 8);
             this.curTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.curTime.Name = "curTime";
-            this.curTime.Size = new System.Drawing.Size(66, 19);
+            this.curTime.Size = new System.Drawing.Size(66, 15);
             this.curTime.TabIndex = 39;
             // 
             // VideoTime
             // 
-            this.VideoTime.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.VideoTime.BackColor = System.Drawing.SystemColors.Control;
             this.VideoTime.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.VideoTime.Font = new System.Drawing.Font("굴림", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.VideoTime.Location = new System.Drawing.Point(823, 8);
             this.VideoTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.VideoTime.Name = "VideoTime";
-            this.VideoTime.Size = new System.Drawing.Size(75, 19);
+            this.VideoTime.Size = new System.Drawing.Size(75, 15);
             this.VideoTime.TabIndex = 41;
             // 
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.Control;
             this.groupBox1.Controls.Add(this.videoSpeed);
+            this.groupBox1.Controls.Add(this.pictureBox5);
             this.groupBox1.Controls.Add(this.VideoTime);
+            this.groupBox1.Controls.Add(this.Speed_tbox);
             this.groupBox1.Controls.Add(this.curTime);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.pictureBox4);
             this.groupBox1.Controls.Add(this.trackBar);
             this.groupBox1.Controls.Add(this.Volume);
             this.groupBox1.Controls.Add(this.audio_step_back);
@@ -303,13 +288,13 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox1.Size = new System.Drawing.Size(1003, 138);
+            this.groupBox1.Size = new System.Drawing.Size(1003, 162);
             this.groupBox1.TabIndex = 41;
             this.groupBox1.TabStop = false;
             // 
             // videoSpeed
             // 
-            this.videoSpeed.Font = new System.Drawing.Font("나눔바른고딕", 4.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.videoSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 4.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.videoSpeed.Location = new System.Drawing.Point(940, 8);
             this.videoSpeed.Name = "videoSpeed";
             this.videoSpeed.Size = new System.Drawing.Size(39, 25);
@@ -317,55 +302,24 @@
             this.videoSpeed.Text = "SPEED";
             this.videoSpeed.UseVisualStyleBackColor = true;
             this.videoSpeed.MouseEnter += new System.EventHandler(this.videoSpeed_MouseEnter);
-            // 
-            // videoSpeed_bar
-            // 
-            this.videoSpeed_bar.LargeChange = 1;
-            this.videoSpeed_bar.Location = new System.Drawing.Point(949, 461);
-            this.videoSpeed_bar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.videoSpeed_bar.Maximum = 100;
-            this.videoSpeed_bar.Name = "videoSpeed_bar";
-            this.videoSpeed_bar.Size = new System.Drawing.Size(151, 56);
-            this.videoSpeed_bar.TabIndex = 19;
-            this.videoSpeed_bar.Value = 50;
-            this.videoSpeed_bar.Visible = false;
-            this.videoSpeed_bar.MouseLeave += new System.EventHandler(this.videoSpeed_bar_MouseLeave);
-
-            // 
-            // pictureBoxIpl1
-            // 
-            this.pictureBoxIpl1.Location = new System.Drawing.Point(4, 141);
-            this.pictureBoxIpl1.Name = "pictureBoxIpl1";
-
-            this.pictureBoxIpl1.Size = new System.Drawing.Size(78, 62);
-            this.pictureBoxIpl1.TabIndex = 52;
-            this.pictureBoxIpl1.TabStop = false;
+            this.videoSpeed.MouseMove += new System.Windows.Forms.MouseEventHandler(this.videoSpeed_MouseMove);
             // 
             // pictureBox5
             // 
             this.pictureBox5.BackgroundImage = global::WindowsFormsApp1.Properties.Resources.up_down;
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox5.Location = new System.Drawing.Point(563, 848);
+            this.pictureBox5.Location = new System.Drawing.Point(917, 46);
             this.pictureBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(50, 50);
             this.pictureBox5.TabIndex = 37;
             this.pictureBox5.TabStop = false;
             // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Location = new System.Drawing.Point(5, 105);
-            this.pictureBox6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(78, 62);
-            this.pictureBox6.TabIndex = 51;
-            this.pictureBox6.TabStop = false;
-            // 
             // pictureBox4
             // 
             this.pictureBox4.BackgroundImage = global::WindowsFormsApp1.Properties.Resources.left_right;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox4.Location = new System.Drawing.Point(507, 848);
+            this.pictureBox4.Location = new System.Drawing.Point(838, 46);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(50, 50);
@@ -461,23 +415,25 @@
             this.audio_pause.Visible = false;
             this.audio_pause.Click += new System.EventHandler(this.audio_pause_Click);
             // 
-            // pictureBox1
+            // videoSpeed_bar
             // 
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 31);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(78, 65);
-            this.pictureBox1.TabIndex = 15;
-            this.pictureBox1.TabStop = false;
+            this.videoSpeed_bar.LargeChange = 1;
+            this.videoSpeed_bar.Location = new System.Drawing.Point(949, 461);
+            this.videoSpeed_bar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.videoSpeed_bar.Maximum = 100;
+            this.videoSpeed_bar.Name = "videoSpeed_bar";
+            this.videoSpeed_bar.Size = new System.Drawing.Size(151, 45);
+            this.videoSpeed_bar.TabIndex = 19;
+            this.videoSpeed_bar.Value = 50;
+            this.videoSpeed_bar.Visible = false;
+            this.videoSpeed_bar.MouseLeave += new System.EventHandler(this.videoSpeed_bar_MouseLeave);
             // 
             // Marker
             // 
             this.Marker.BackColor = System.Drawing.Color.Transparent;
             this.Marker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Marker.BackgroundImage")));
             this.Marker.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Marker.Location = new System.Drawing.Point(637, 848);
+            this.Marker.Location = new System.Drawing.Point(1018, 850);
             this.Marker.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Marker.Name = "Marker";
             this.Marker.Size = new System.Drawing.Size(69, 50);
@@ -489,7 +445,7 @@
             // 
             this.folder_open.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("folder_open.BackgroundImage")));
             this.folder_open.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.folder_open.Location = new System.Drawing.Point(712, 848);
+            this.folder_open.Location = new System.Drawing.Point(1093, 850);
             this.folder_open.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.folder_open.Name = "folder_open";
             this.folder_open.Size = new System.Drawing.Size(69, 50);
@@ -501,7 +457,7 @@
             // 
             this.Camera.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Camera.BackgroundImage")));
             this.Camera.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Camera.Location = new System.Drawing.Point(788, 848);
+            this.Camera.Location = new System.Drawing.Point(1169, 850);
             this.Camera.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Camera.Name = "Camera";
             this.Camera.Size = new System.Drawing.Size(69, 50);
@@ -513,7 +469,7 @@
             // 
             this.save.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("save.BackgroundImage")));
             this.save.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.save.Location = new System.Drawing.Point(863, 848);
+            this.save.Location = new System.Drawing.Point(1244, 850);
             this.save.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(69, 50);
@@ -525,7 +481,7 @@
             // 
             this.Settings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Settings.BackgroundImage")));
             this.Settings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Settings.Location = new System.Drawing.Point(939, 848);
+            this.Settings.Location = new System.Drawing.Point(1320, 850);
             this.Settings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Settings.Name = "Settings";
             this.Settings.Size = new System.Drawing.Size(69, 50);
@@ -533,33 +489,52 @@
             this.Settings.UseVisualStyleBackColor = true;
             this.Settings.Click += new System.EventHandler(this.Settings_Click);
             // 
+            // Gsensor
+            // 
+            this.Gsensor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Gsensor.BackImageWrapMode = System.Windows.Forms.DataVisualization.Charting.ChartImageWrapMode.Scaled;
+            this.Gsensor.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.DashDotDot;
+            chartArea1.AlignmentOrientation = ((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations)((System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Vertical | System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal)));
+            chartArea1.AxisX.IntervalAutoMode = System.Windows.Forms.DataVisualization.Charting.IntervalAutoMode.VariableCount;
+            chartArea1.AxisX.IntervalOffset = 4D;
+            chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Number;
+            chartArea1.Name = "Xaxis";
+            chartArea2.Name = "Yaxis";
+            chartArea3.Name = "Zaxis";
+            this.Gsensor.ChartAreas.Add(chartArea1);
+            this.Gsensor.ChartAreas.Add(chartArea2);
+            this.Gsensor.ChartAreas.Add(chartArea3);
+            legend1.Name = "Legend1";
+            this.Gsensor.Legends.Add(legend1);
+            this.Gsensor.Location = new System.Drawing.Point(12, 680);
+            this.Gsensor.Name = "Gsensor";
+            this.Gsensor.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Chocolate;
+            series1.ChartArea = "Xaxis";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.Gsensor.Series.Add(series1);
+            this.Gsensor.Size = new System.Drawing.Size(996, 219);
+            this.Gsensor.TabIndex = 54;
+            this.Gsensor.Text = "chart1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-
             this.ClientSize = new System.Drawing.Size(1393, 911);
+            this.Controls.Add(this.Gsensor);
             this.Controls.Add(this.videoSpeed_bar);
-
-            this.Controls.Add(this.pictureBoxIpl1);
-            this.Controls.Add(this.pictureBox5);
-            this.Controls.Add(this.pictureBox6);
-            this.Controls.Add(this.Speed_tbox);
             this.Controls.Add(this.webBrowser);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.video_panel);
             this.Controls.Add(this.Camera_btn);
             this.Controls.Add(this.Parking_btn);
-            this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.Event_btn);
             this.Controls.Add(this.Dirve_btn);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.listView);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Marker);
             this.Controls.Add(this.folder_open);
             this.Controls.Add(this.Camera);
@@ -578,13 +553,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.videoSpeed_bar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIpl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Volume)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.videoSpeed_bar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Gsensor)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -598,7 +571,6 @@
         private System.Windows.Forms.Button Camera;
         private System.Windows.Forms.Button folder_open;
         private System.Windows.Forms.Button Marker;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TrackBar Volume_Bar;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ListView listView;
@@ -606,12 +578,9 @@
         private System.Windows.Forms.CheckBox Event_btn;
         private System.Windows.Forms.CheckBox Parking_btn;
         private System.Windows.Forms.CheckBox Camera_btn;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel video_panel;
         private System.Windows.Forms.Timer Video_Timer;
         private System.Windows.Forms.WebBrowser webBrowser;
-        private System.Windows.Forms.PictureBox pictureBox6;
-        private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIpl1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button audio_step_forward;
         private System.Windows.Forms.Button audio_stop;
@@ -629,6 +598,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button videoSpeed;
         private System.Windows.Forms.TrackBar videoSpeed_bar;
+        private System.Windows.Forms.DataVisualization.Charting.Chart Gsensor;
     }
 }
 

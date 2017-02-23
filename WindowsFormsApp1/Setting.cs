@@ -10,24 +10,13 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using OpenCvSharp;
 
-
-
-using OpenCvSharp;
 namespace WindowsFormsApp1
 {
-    class DllImport
-    {
-        [DllImport("User32.dll")]
-        public static extern int MessageBox(int i, string text, string title, int type);
-
-    
-    }
-
     public partial class Setting : Form       
     {        
         string video_path;
 
-        CvCapture capture;
+        //CvCapture capture;
         int shiness;
         int exposure;
         int shade;
@@ -36,69 +25,13 @@ namespace WindowsFormsApp1
         private void Setting_Load(object sender, EventArgs e)
         {
             timer1.Enabled = true;
-            IplImage src;
-            src = new IplImage("imageTest.jpg", LoadMode.AnyColor);
-            //src = new IplImage(openFileDialog1.FileName, LoadMode.AnyColor);
-            Cv.AddS(src, Cv.RGB(Shiness_R, Shiness_G, Shiness_B), src, null);
-            src.Smooth(src, SmoothType.Gaussian); //블러처리
-            pictureBoxIpl1.ImageIpl = src;
-            
-            //src.Smooth(src, SmoothType.Median);
-            
-            //Cv.NamedWindow("image");
-            //Cv.ShowImage("image", src);
-            /*
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                src = new IplImage("imageTest.jpg", LoadMode.AnyColor);
-                //src = new IplImage(openFileDialog1.FileName, LoadMode.AnyColor);
-                pictureBoxIpl1.ImageIpl = src;
-            }*/
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
-            IplImage src, dst;
             
-            src = new IplImage("imageTest.jpg", LoadMode.AnyColor);
-            //src = new IplImage(openFileDialog1.FileName, LoadMode.AnyColor);
-            Cv.AddS(src, Cv.RGB(Shiness_R, Shiness_G, Shiness_B), src, null);
-            //Shiness RGB 값 조절하여 이미지에 추가
-            if (flip_x)
-                src.Flip(null, FlipMode.X);//x축으로 flip
-            if (flip_y)
-                src.Flip(null, FlipMode.Y);//y축으로 flip
-            /*equailize histogram*///////////////////test//////////test//////test
-            /*dst = new IplImage();
-            Cv.EqualizeHist(src, dst);
-            Cv.NamedWindow("after");
-            Cv.ShowImage("after", dst);
-            IplImage imgH = new IplImage(src.Size, BitDepth.U8, 1);
-            IplImage imgS = new IplImage(src.Size, BitDepth.U8, 1);
-            IplImage imgV = new IplImage(src.Size, BitDepth.U8, 1);
-            src.CvtColor(dst, ColorConversion.RgbToCrCb);*/
-            //dst.CvtPixToPlane()
-            
-            /*equalize histogram*/////////end//////////end//////////end
-            pictureBoxIpl1.ImageIpl = src;
         }
-        public Setting()
+        public Setting(string path)
         {
-
-            //IplImage img = Cv.LoadImage("imageTest.jpg");
-            //IplImage img = new IplImage("imageTest.jpg");
-            //img = new IplImage("imageTest.jpg", LoadMode.AnyColor);
-            //img = capture.QueryFrame();
-            //pictureBoxIpl1.ImageIpl = img;
-            //bright_image = Cv.CreateImage(Cv.GetSize(img), 8, 3);
-            //Cv.AddS(img, Cv.RGB(60, 60, 60), img, null);
-            /*
-            Cv.NamedWindow("image");
-            Cv.ShowImage("image", img);
-
-            Cv.WaitKey();
-            Cv.DestroyWindow("image");
-            Cv.ReleaseImage(img);
-            */
             video_path = path;
             InitializeComponent();
         }
@@ -114,13 +47,11 @@ namespace WindowsFormsApp1
                 Shiness_R -= 10;
                 Shiness_G -= 10;
                 Shiness_B -= 10;
-
             }
         }
 
         private void Shiness_plus_Click(object sender, EventArgs e)
         {
-
             Shiness_R += 10;
             Shiness_G += 10;
             Shiness_B += 10;
@@ -173,7 +104,7 @@ namespace WindowsFormsApp1
 
         private void Setting_save_Click(object sender, EventArgs e)
         {
-            DllImport.MessageBox(0, "hello", "Message Box Title", 0);
+
         }
 
         private void Setting_default_Shiness()
@@ -220,9 +151,7 @@ namespace WindowsFormsApp1
             else
                 flip_y = true;
         }
-        /// <summary>
-        /// ////////////////////////////////////test
-        /// </summary>
+
         private void Setting_flip_X()
         {
             
@@ -267,6 +196,5 @@ namespace WindowsFormsApp1
             }
             return lut;
         }
-
     }
 }
