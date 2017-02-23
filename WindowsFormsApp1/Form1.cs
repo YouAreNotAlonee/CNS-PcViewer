@@ -170,7 +170,8 @@ namespace WindowsFormsApp1
 
         private void TAT_showlist()
         {
-            listView.Clear();
+            //listView.Clear();
+            listView.Items.Clear();
             int mode_0 = 254, mode_1 = 254, mode_2 = 254, mode_3 = 254, mode = 254, file_num=1, file_cnt;
             unsafe
             {
@@ -191,88 +192,171 @@ namespace WindowsFormsApp1
             mode_2 = TAT_Get_File_Cnt(handle, (char)2);
             mode_3 = TAT_Get_File_Cnt(handle, (char)3);
             file_cnt = mode_0 + mode_1 + mode_2 + mode_3;
-            byte[] list_name_arr = new byte[40 * file_cnt];
-            int[] list_index_arr = new int[sizeof(int) * file_cnt];
-            int[] list_size_arr = new int[sizeof(int) * file_cnt];
-            int[] list_time_arr = new int[sizeof(int) * file_cnt];
+            byte[] list_name_arr = new byte[40 * mode_0];
+            int[] list_index_arr = new int[sizeof(int) * mode_0];
+            int[] list_size_arr = new int[sizeof(int) * mode_0];
+            int[] list_time_arr = new int[sizeof(int) * mode_0];
+
+            byte[] list_name_arr1 = new byte[40 * mode_1];
+            int[] list_index_arr1 = new int[sizeof(int) * mode_1];
+            int[] list_size_arr1 = new int[sizeof(int) * mode_1];
+            int[] list_time_arr1 = new int[sizeof(int) * mode_1];
+
+            byte[] list_name_arr2 = new byte[40 * file_cnt];
+            int[] list_index_arr2 = new int[sizeof(int) * file_cnt];
+            int[] list_size_arr2 = new int[sizeof(int) * file_cnt];
+            int[] list_time_arr2 = new int[sizeof(int) * file_cnt];
+
+            byte[] list_name_arr3 = new byte[40 * file_cnt];
+            int[] list_index_arr3 = new int[sizeof(int) * file_cnt];
+            int[] list_size_arr3 = new int[sizeof(int) * file_cnt];
+            int[] list_time_arr3 = new int[sizeof(int) * file_cnt];
             //위에 있는 byte형 포인터 1개와 int형포인터 3개를 변환할 배열
 
             file_sum += TAT_Get_File_List_tt(handle, (char)0, mode_0, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
-            file_sum += TAT_Get_File_List_tt(handle, (char)1, mode_1, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
-            file_sum += TAT_Get_File_List_tt(handle, (char)2, mode_2, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
-            file_sum += TAT_Get_File_List_tt(handle, (char)3, mode_3, list_name_arr, list_index_arr, list_size_arr, list_time_arr);
+            file_sum += TAT_Get_File_List_tt(handle, (char)1, mode_1, list_name_arr1, list_index_arr1, list_size_arr1, list_time_arr1);
+            file_sum += TAT_Get_File_List_tt(handle, (char)2, mode_2, list_name_arr2, list_index_arr2, list_size_arr2, list_time_arr2);
+            file_sum += TAT_Get_File_List_tt(handle, (char)3, mode_3, list_name_arr3, list_index_arr3, list_size_arr3, list_time_arr3);
             ///////
             //문자열 배열 테스트
-            string[] name = new string[file_cnt];
-            string[] Only_name = new string[file_cnt];
-            int k = 0;
+            string[] name = new string[mode_0];
+            string[] Only_name = new string[mode_0];
+            string[] name1 = new string[mode_1+1];
+            string[] Only_name1 = new string[mode_1+1];
+            string[] name2 = new string[file_cnt];
+            string[] Only_name2 = new string[file_cnt];
+            string[] name3 = new string[file_cnt];
+            string[] Only_name3 = new string[file_cnt];
+            int k = 0, k1=0, k2=0, k3=0;
             string temp = null;
             //////
             for (int i = 0; i < list_name_arr.Length; i++)
             {
-                //Console.Write(Convert.ToChar(list_name_arr[i]));
-                
-                
                 temp +=Convert.ToChar(list_name_arr[i]);
                 
                 if (i == file_num * 40 - 1)
                 {
-                    //Console.WriteLine("");
                     file_num++;
-                    
-                    //string temp_name = "";
                     name[k] = temp;
                     k++;
                     temp = null;
                 }
             }
-            for (int i = 0; i < name.Length; i++)
-                Console.WriteLine(i + "번째 파일 : " + name[i]);
-            for (int i = 0; i < file_cnt; i++)
+            for (int i = 0; i < list_name_arr1.Length; i++)
             {
-                Only_name[i] = name[i].Substring(1,16);//확장자 전까지 자름
-                Console.WriteLine(i + "번째 파일 : " + Only_name[i]);
+                temp += Convert.ToChar(list_name_arr1[i]);
+
+                if (i == file_num * 40 - 1)
+                {
+                    file_num++;
+                    name1[k1] = temp;
+                    k1++;
+                    temp = null;
+                }
+            }
+            for (int i = 0; i < list_name_arr2.Length; i++)
+            {
+                temp += Convert.ToChar(list_name_arr2[i]);
+
+                if (i == file_num * 40 - 1)
+                {
+                    file_num++;
+                    name2[k2] = temp;
+                    k2++;
+                    temp = null;
+                }
+            }
+            for (int i = 0; i < list_name_arr3.Length; i++)
+            {
+                temp += Convert.ToChar(list_name_arr3[i]);
+
+                if (i == file_num * 40 - 1)
+                {
+                    file_num++;
+                    name3[k3] = temp;
+                    k3++;
+                    temp = null;
+                }
+            }
+
+            for (int i = 0; i < mode_0; i++)
+            {
+                if (name[i] != null)
+                {
+                    Only_name[i] = name[i].Substring(1, 16);//확장자 전까지 자름
+                    Console.WriteLine(i + "번째 E 파일 : " + Only_name[i]);
+                    if (E_check)
+                    {
+                        ListViewItem lvi = new ListViewItem(Only_name[i]);//첫번째 인자는 파일의 이름(확장자 제외)
+                                                                          //ListViewItem lvi = new ListViewItem(Only_name[jj]+"avi");//첫번째 인자는 파일의 이름(확장자 포함)
+                        lvi.SubItems.Add((list_size_arr[i] / (1024 * 1024)) + "M".ToString());//파일크기
+                        lvi.SubItems.Add(list_time_arr[i].ToString());//확장자
+                        lvi.SubItems.Add("nnnn");//절대경로
+                        lvi.ImageIndex = 0;
+                        listView.Items.Add(lvi);
+                    }
+                }
+            }
+            for (int i = 0; i < mode_1; i++)
+            {
+                if(name1[i] != null)
+                { 
+                    Only_name1[i] = name1[i].Substring(1, 16);//확장자 전까지 자름
+                    Console.WriteLine(i + "번째 I 파일 : " + Only_name1[i]);
+                    if (N_check)
+                    {
+                        ListViewItem lvi = new ListViewItem(Only_name1[i]);//첫번째 인자는 파일의 이름(확장자 제외)
+                                                                           //ListViewItem lvi = new ListViewItem(Only_name[jj]+"avi");//첫번째 인자는 파일의 이름(확장자 포함)
+                        lvi.SubItems.Add((list_size_arr1[i] / (1024 * 1024)) + "M".ToString());//파일크기
+                        lvi.SubItems.Add(list_time_arr1[i].ToString());//확장자
+                        lvi.SubItems.Add("nnnn");//절대경로
+                        lvi.ImageIndex = 0;
+                        listView.Items.Add(lvi);
+                    }
+                }
+            }
+            for (int i = 0; i < mode_2; i++)
+            {
+                if (name2[i] != null)
+                {
+                    Only_name2[i] = name2[i].Substring(1, 16);//확장자 전까지 자름
+                    Console.WriteLine(i + "번째 P 파일 : " + Only_name2[i]);
+                    if (P_check)
+                    {
+                        ListViewItem lvi = new ListViewItem(Only_name2[i]);//첫번째 인자는 파일의 이름(확장자 제외)
+                                                                           //ListViewItem lvi = new ListViewItem(Only_name[jj]+"avi");//첫번째 인자는 파일의 이름(확장자 포함)
+                        lvi.SubItems.Add((list_size_arr2[i] / (1024 * 1024)) + "M".ToString());//파일크기
+                        lvi.SubItems.Add(list_time_arr2[i].ToString());//확장자
+                        lvi.SubItems.Add("nnnn");//절대경로
+                        lvi.ImageIndex = 0;
+                        listView.Items.Add(lvi);
+                    }
+                }
+            }
+            for (int i = 0; i < mode_3; i++)
+            {
+                if (name3[i] != null)
+                {
+                    Only_name3[i] = name3[i].Substring(1, 16);//확장자 전까지 자름
+                    Console.WriteLine(i + "번째 M 파일 : " + Only_name3[i]);
+                    if (M_check)
+                    {
+                        ListViewItem lvi = new ListViewItem(Only_name3[i]);//첫번째 인자는 파일의 이름(확장자 제외)
+                                                                           //ListViewItem lvi = new ListViewItem(Only_name[jj]+"avi");//첫번째 인자는 파일의 이름(확장자 포함)
+                        lvi.SubItems.Add((list_size_arr3[i] / (1024 * 1024)) + "M".ToString());//파일크기
+                        lvi.SubItems.Add(list_time_arr3[i].ToString());//확장자
+                        lvi.SubItems.Add("nnnn");//절대경로
+                        lvi.ImageIndex = 0;
+                        listView.Items.Add(lvi);
+                    }
+                }
             }
             //이름만 추출
-
-            for (int jj = 0; jj < file_sum; jj++)
+            /*
+            for (int jj = 0; jj < file_cnt; jj++)
             {
-                //note:마지막문자를 기준으로 나누자
-                //원래는 char배열인데, string으로 바꿔서 동영상의 분류 문자를 끝으로 파일명을 자름
-                /*
-                if (Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'e' || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'E')
-                    mode = 0;
-                else if (Convert.ToChar(list_name_arr[jj * 40 + 16]).Equals('N') || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'R' || Convert.ToChar(list_name_arr[jj * 40 + 16]).Equals('I'))
-                    mode = 1;
-                else if (Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'M' || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'P')
-                    mode = 2;
-                else if (Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'U' || Convert.ToChar(list_name_arr[jj * 40 + 16]) == 'J')
-                    mode = 3;
-                */
-                if (Only_name[jj].EndsWith("E") || Only_name[jj].EndsWith("e"))
-                    mode = 0;
-                else if (Only_name[jj].EndsWith("N") || Only_name[jj].EndsWith("R") || Only_name[jj].EndsWith("I"))
-                    mode = 1;
-                else if (Only_name[jj].EndsWith("M") || Only_name[jj].EndsWith("P"))
-                    mode = 2;
-                else if (Only_name[jj].EndsWith("U") || Only_name[jj].EndsWith("J"))
-                    mode = 3;
-
                 if (mode == 0)
                 {
-                    /*
-                    string n = null;
-                    for (int i = 0; i < jj * 40 + 36; i++)
-                        n += Convert.ToChar(list_name_arr[i]);
-
-                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
-
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
-                    lvi.SubItems.Add("nnnn");//절대경로
-                    lvi.ImageIndex = 0;
-                    listView.Items.Add(lvi);
-                    *///char배열을 사용했을때의 리스트 삽입
                     ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
                     //ListViewItem lvi = new ListViewItem(Only_name[jj]+"avi");//첫번째 인자는 파일의 이름(확장자 포함)
                     lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
@@ -283,71 +367,37 @@ namespace WindowsFormsApp1
                 }
                 else if (mode == 1)
                 {
-                    /*
-                    string n = null;
-                    for (int i = 0; i < jj * 40 + 36; i++)
-                        n += Convert.ToChar(list_name_arr[i]);
-                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
-
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
-                    lvi.SubItems.Add("nnnn");//절대경로
-                    lvi.ImageIndex = 0;
-                    listView.Items.Add(lvi);
-                    */
                     ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add((list_size_arr1[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr1[jj].ToString());//확장자
                     lvi.SubItems.Add("nnnn");//절대경로
                     lvi.ImageIndex = 0;
                     listView.Items.Add(lvi);
                 }
                 else if (mode == 2)
                 {
-                    /*
-                    string n = null;
-                    for (int i = 0; i < jj * 40 + 36; i++)
-                        n += Convert.ToChar(list_name_arr[i]);
-
-                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
-
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)).ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
-                    lvi.SubItems.Add("nnnn");//절대경로
-                    lvi.ImageIndex = 0;
-                    listView.Items.Add(lvi);
-                    */
                     ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add((list_size_arr2[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr2[jj].ToString());//확장자
                     lvi.SubItems.Add("nnnn");//절대경로
                     lvi.ImageIndex = 0;
                     listView.Items.Add(lvi);
                 }
                 else if (mode == 3)
                 {
-                    /*
-                    string n = null;
-                    for (int i = 0; i < jj * 40 + 36; i++)
-                        n += Convert.ToChar(list_name_arr[i]);
-
-                    ListViewItem lvi = new ListViewItem(n);//첫번째 인자는 파일의 이름(확장자 제외)
-
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)).ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
-                    lvi.SubItems.Add("nnnn");//절대경로
-                    lvi.ImageIndex = 0;
-                    listView.Items.Add(lvi);
-                    */
                     ListViewItem lvi = new ListViewItem(Only_name[jj]);//첫번째 인자는 파일의 이름(확장자 제외)
-                    lvi.SubItems.Add((list_size_arr[jj] / (1024 * 1024)) + "M".ToString());//파일크기
-                    lvi.SubItems.Add(list_time_arr[jj].ToString());//확장자
+                    lvi.SubItems.Add((list_size_arr3[jj] / (1024 * 1024)) + "M".ToString());//파일크기
+                    lvi.SubItems.Add(list_time_arr3[jj].ToString());//확장자
                     lvi.SubItems.Add("nnnn");//절대경로
                     lvi.ImageIndex = 0;
                     listView.Items.Add(lvi);
                 }
-                listView.EndUpdate();
+                
+                
             }
+            */
+            listView.Update();
+            listView.EndUpdate();
         }
 
         private void initFileList(string curdir)
@@ -457,9 +507,9 @@ namespace WindowsFormsApp1
             TAT_device();
             TAT_showlist();
             this.listView.View = View.Details;
-            this.listView.Columns.Add("파일이름", 100, HorizontalAlignment.Center);
+            this.listView.Columns.Add("파일이름", 130, HorizontalAlignment.Center);
             this.listView.Columns.Add("파일크기", 60, HorizontalAlignment.Center);
-            this.listView.Columns.Add("확장자", 60, HorizontalAlignment.Center);
+            this.listView.Columns.Add("재생시간", 60, HorizontalAlignment.Center);
             this.listView.Columns.Add("상대경로", 80, HorizontalAlignment.Center);
         }
         public void SetData(String Data)
